@@ -1,11 +1,88 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="jogApp">
 <head>
     <meta charset="UTF-8">
     <title>JogApp</title>
-</head>
-<body>
 
-<h1>Hello, this is the jog-app</h1>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/bower/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/bower/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../app/css/mycss.css" />
+
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300,700,400' rel='stylesheet' type='text/css'>
+
+    <!-- JS -->
+    <script src="../assets/bower/angular/angular.min.js"></script>
+    <script src="../assets/bower/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="../assets/bower/angular-resource/angular-resource.min.js"></script>
+    <script src="../assets/bower/satellizer/satellizer.min.js"></script>
+    <script src="../assets/bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- Angular App -->
+    <script src="../app/js/app.js"></script>
+    <!-- Services -->
+    <!--<script src="../app/js/services/expense.js"></script>-->
+    <!--<script src="../app/js/services/category.js"></script>-->
+    <!-- Controllers -->
+    <script src="../app/js/controllers/homeController.js"></script>
+    <script src="../app/js/controllers/userController.js"></script>
+    <script src="../app/js/controllers/authController.js"></script>
+    <!--<script src="../app/js/controllers/expensesController.js"></script>-->
+
+    <base href="/">
+</head>
+<body ng-controller="UserController as user">
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" ui-sref="/">JogApp</a>
+        </div>
+
+        <ul class="nav navbar-nav">
+            <li>
+                <a ui-sref="/"><i class="fa fa-home"></i> Home</a>
+            </li>
+            <li>
+                <a ui-sref="dashboard" ng-if="authenticated"><i class="fa fa-dashboard"></i> Dashboard</a>
+            </li>
+
+            <p>{{ currentUser.role }}</p>
+            <!--<li uib-dropdown ng-if="authenticated">-->
+                <!--<a href="#" uib-dropdown-toggle="">-->
+                    <!--<i class="fa fa-money"></i> Expenses <span class="caret"></span></a>-->
+                <!--<ul uib-dropdown-menu role="menu">-->
+                    <!--<li><a href="#"><i class="fa fa-plus"></i> New Expense</a></li>-->
+                    <!--&lt;!&ndash;<li><a ui-sref="expenses/list"><i class="fa fa-list-ul"></i> List</a></li>&ndash;&gt;-->
+                    <!--<li><a href="#"><i class="fa fa-search"></i> Search</a></li>-->
+                <!--</ul>-->
+            <!--</li>-->
+        </ul>
+        <div class="navbar-right">
+            <ul class="nav navbar-nav">
+                <li class="UibDropdownController" ng-if="!authenticated">
+                    <a ui-sref="auth"><i class="fa fa-user"></i> Login</a>
+                </li>
+                <li uib-dropdown ng-if="authenticated">
+                    <a href="#" uib-dropdown-toggle>
+                        <span>{{ currentUser.first_name + ' ' + currentUser.last_name }}</span>
+                        <i class="fa fa-user"></i> <span class="caret"></span>
+                    </a>
+                    <ul class="uib-dropdown-menu" role="menu">
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Manage Account</a></li>
+                        <li class="divider"></li>
+                        <li><a><i class="fa fa-unlock-alt"></i> Change password</a></li>
+                        <li class="divider"></li>
+                        <li><a ui-sref="/" ng-click="user.logout()"><i class="fa fa-sign-out"></i> Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="main">
+    <div class="container" ui-view></div>
+</div>
 </body>
 </html>
