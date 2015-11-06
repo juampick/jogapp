@@ -1,9 +1,12 @@
 angular
-    .module('jogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'satellizer'])
+    .module('jogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'satellizer', 'toastr', 'ngMessages'])
+    .constant('urls', {
+        BASE_API: '/api/v1'
+    })
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', '$httpProvider', '$provide', config])
     .run(['$rootScope', '$state', run]);
 
-function config($stateProvider, $urlRouterProvider, $locationProvider, $authProvider, $httpProvider, $provide) {
+function config($stateProvider, $urlRouterProvider, $locationProvider, $authProvider, $httpProvider, $provide, urls) {
 
     function redirectWhenLoggedOut($q, $injector) {
         return {
@@ -20,7 +23,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider, $authProv
                         // If we get a rejection corresponding to one of the reasons in our array, we know we need to authenticate the user so we can remove the current user from local storage
                         localStorage.removeItem('user');
                         // Send the user to the auth state so they can login
-                        $state.go('auth');
+                        $state.go('signin');
                     }
                 });
 
@@ -32,8 +35,10 @@ function config($stateProvider, $urlRouterProvider, $locationProvider, $authProv
     $provide.factory('redirectWhenLoggedOut', redirectWhenLoggedOut);
     // Push the new factory onto the $http interceptor array
     $httpProvider.interceptors.push('redirectWhenLoggedOut');
-    // Satellizer configuration that specifies which API route the JWT should be retrieved from:
+    // Satellizer config:
     $authProvider.loginUrl = '/api/v1/authenticate';
+    $authProvider.signupUrl = '/api/v1/authenticate/signup';
+
     //// Redirect to the auth state if any other states
     //// are requested other than users
 
@@ -53,9 +58,17 @@ function config($stateProvider, $urlRouterProvider, $locationProvider, $authProv
                 requireLogin: false
             }
         })
-        .state('auth', {
-            url: '/auth',
-            templateUrl: 'app/pages/login.html',
+        .state('signin', {
+            url: '/signin',
+            templateUrl: 'app/pages/signin.html',
+            controller: 'AuthController as auth',
+            data: {
+                requireLogin: false
+            }
+        })
+        .state('signup', {
+            url: '/signup',
+            templateUrl: 'app/pages/signup.html',
             controller: 'AuthController as auth',
             data: {
                 requireLogin: false
@@ -106,7 +119,7 @@ function run ($rootScope, $state) {
             // Putting the user's data on $rootScope allows us to access it anywhere across the app. Here we are grabbing what is in local storage
             $rootScope.currentUser = user;
             // If the user is logged in and we hit the auth route we don't need to stay there and can send the user to the main state
-            if (toState.name === "auth") {
+            if (toState.name === "signin") {
                 // Preventing the default behavior allows us to use $state.go to change states
                 event.preventDefault();
                 // go to the "main" state which in our case is '/'

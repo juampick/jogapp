@@ -7,6 +7,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../assets/bower/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../assets/bower/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../assets/bower/angular-toastr/dist/angular-toastr.min.css" />
     <link rel="stylesheet" href="../app/css/mycss.css" />
 
     <!-- Fonts -->
@@ -18,6 +19,8 @@
     <script src="../assets/bower/angular-resource/angular-resource.min.js"></script>
     <script src="../assets/bower/satellizer/satellizer.min.js"></script>
     <script src="../assets/bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="../assets/bower/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
+    <script src="../assets/bower/angular-messages/angular-messages.min.js"></script>
 
     <!-- Angular App -->
     <script src="../app/js/app.js"></script>
@@ -63,7 +66,7 @@
                     <a ui-sref="admin" ng-if="authenticated && currentUser.role === 'admin'"><i class="fa fa-info"></i> Admin</a>
                 </li>
                 <li class="UibDropdownController" ng-if="!authenticated">
-                    <a ui-sref="auth"><i class="fa fa-user"></i> Login</a>
+                    <a ui-sref="signin"><i class="fa fa-user"></i> Sign In</a>
                 </li>
                 <li uib-dropdown ng-if="authenticated">
                     <a href="#" uib-dropdown-toggle>
@@ -78,6 +81,9 @@
                         <li class="divider"></li>
                         <li><a ui-sref="/" ng-click="user.logout()"><i class="fa fa-sign-out"></i> Logout</a></li>
                     </ul>
+                </li>
+                <li ng-if="!authenticated">
+                    <a ui-sref="signup"><i class="fa fa-plus-circle"></i> Sign Up</a>
                 </li>
             </ul>
         </div>

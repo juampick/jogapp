@@ -2,7 +2,7 @@ angular
     .module('jogApp')
     .controller('UserController', UserController);
 
-function UserController($http, $auth, $rootScope) {
+function UserController($http, $auth, $rootScope, toastr) {
 
     var vm = this;
 
@@ -24,6 +24,7 @@ function UserController($http, $auth, $rootScope) {
 
             // Remove the current user info from rootscope
             $rootScope.currentUser = null;
+            toastr.success('Logout Successful', 'Goodbye!');
         });
     }
 }
