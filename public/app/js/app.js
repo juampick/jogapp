@@ -68,6 +68,23 @@ function config($stateProvider, $urlRouterProvider, $locationProvider, $authProv
             data: {
                 requireLogin: true
             }
+        })
+        .state('access-denied', {
+            url         : '/access_denied',
+            templateUrl : 'app/pages/access_denied.html',
+            data: {
+                requireLogin: false,
+                onlyAdmin: false
+            }
+        })
+        .state('admin', {
+            url         : '/admin',
+            templateUrl : 'app/pages/admin.html',
+            controller  : 'HomeController as home',
+            data: {
+                requireLogin: true,
+                onlyAdmin: true
+            }
         });
 }
 
@@ -97,11 +114,22 @@ function run ($rootScope, $state) {
             }
         }
 
+        /* Require Login */
         var requireLogin = toState.data.requireLogin;
         if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
             event.preventDefault();
             // go to the "main" state which in our case is '/'
             $state.go('/');
+        } else {
+            /* Only Admin Users */
+            var onlyAdmin = toState.data.onlyAdmin;
+            if (onlyAdmin && $rootScope.currentUser.role && $rootScope.currentUser.role !== 'admin'){ //If the user has a different role than admin redirect to '/'
+                event.preventDefault();
+                // go to the "main" state which in our case is '/'
+                $state.go('access-denied');
+            }
         }
+
+
     });
 }

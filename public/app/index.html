@@ -47,9 +47,8 @@
                 <a ui-sref="dashboard" ng-if="authenticated"><i class="fa fa-dashboard"></i> Dashboard</a>
             </li>
 
-            <p>{{ currentUser.role }}</p>
             <!--<li uib-dropdown ng-if="authenticated">-->
-                <!--<a href="#" uib-dropdown-toggle="">-->
+                <!--<a href="#" ui-dropdown-toggle="">-->
                     <!--<i class="fa fa-money"></i> Expenses <span class="caret"></span></a>-->
                 <!--<ul uib-dropdown-menu role="menu">-->
                     <!--<li><a href="#"><i class="fa fa-plus"></i> New Expense</a></li>-->
@@ -60,13 +59,16 @@
         </ul>
         <div class="navbar-right">
             <ul class="nav navbar-nav">
+                <li>
+                    <a ui-sref="admin" ng-if="authenticated && currentUser.role === 'admin'"><i class="fa fa-info"></i> Admin</a>
+                </li>
                 <li class="UibDropdownController" ng-if="!authenticated">
                     <a ui-sref="auth"><i class="fa fa-user"></i> Login</a>
                 </li>
                 <li uib-dropdown ng-if="authenticated">
                     <a href="#" uib-dropdown-toggle>
-                        <span>{{ currentUser.first_name + ' ' + currentUser.last_name }}</span>
-                        <i class="fa fa-user"></i> <span class="caret"></span>
+                        <span>{{ currentUser.name }}</span>
+                        <i ng-class="{'fa-user': currentUser.role === 'user', 'fa-user-secret': currentUser.role === 'admin'}" class="fa"></i> <span class="caret"></span>
                     </a>
                     <ul class="uib-dropdown-menu" role="menu">
                         <li><a href="#">Profile</a></li>
