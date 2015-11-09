@@ -3,6 +3,9 @@
 // ============ API Routes ============
     Route::group(array('prefix' => 'api/v1'), function () {
 
+        # TimeEntry #
+        Route::resource('time_entry', 'TimeEntryController', ['only' => 'index', 'store', 'update', 'delete']);
+
         # JWT Authentication #
         Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
         Route::post('authenticate', 'AuthenticateController@authenticate');

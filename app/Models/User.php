@@ -36,4 +36,9 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public function timeEntries()
+    {
+        return $this->hasMany('App\Models\TimeEntry');
+    }
 }

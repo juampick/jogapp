@@ -24,19 +24,23 @@
     <script src="../assets/bower/angular-messages/angular-messages.min.js"></script>
     <script src="../assets/bower/angular-loading-bar/build/loading-bar.min.js"></script>
     <script src="../assets/bower/angular-animate/angular-animate.js"></script>
+    <script src="../assets/bower/moment/moment.js"></script>
+    <script src="../assets/bower/angular-moment/angular-moment.min.js"></script>
 
     <!-- Angular App -->
     <script src="../app/js/app.js"></script>
     <!-- Services -->
-    <!--<script src="../app/js/services/expense.js"></script>-->
-    <!--<script src="../app/js/services/category.js"></script>-->
+    <script src="../app/js/services/timeEntry.js"></script>
     <!-- Controllers -->
     <script src="../app/js/controllers/homeController.js"></script>
     <script src="../app/js/controllers/userController.js"></script>
     <script src="../app/js/controllers/authController.js"></script>
-    <!--<script src="../app/js/controllers/expensesController.js"></script>-->
+    <script src="../app/js/controllers/timeEntryController.js"></script>
     <!-- Directives -->
     <script src="../app/js/directives/compareTo.js"></script>
+    <script src="../app/js/directives/pagination.js"></script>
+    <!-- Filters -->
+    <script src="../app/js/filters/dateToISO.js"></script>
 
     <base href="/">
 </head>
@@ -44,26 +48,24 @@
 <nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" ui-sref="/"><i class="fa fa-tachometer"></i> JogApp</a>
+            <a class="navbar-brand" ui-sref="/"><i class="app-icon fa fa-tachometer"></i> JogApp</a>
         </div>
 
         <ul class="nav navbar-nav">
             <li>
                 <a ui-sref="/"><i class="fa fa-home"></i> Home</a>
             </li>
+            <li uib-dropdown ng-if="authenticated">
+                <a href="#" uib-dropdown-toggle>
+                    <i class="fa fa-list"></i> Log<span class="caret"></span></a>
+                <ul uib-dropdown-menu role="menu">
+                    <li><a ui-sref="log_list"><i class="fa fa-bars"></i> Log List</a></li>
+                    <li><a ui-sref="log_report"><i class="fa fa-line-chart"></i> Report</a></li>
+                </ul>
+            </li>
             <li>
                 <a ui-sref="dashboard" ng-if="authenticated"><i class="fa fa-dashboard"></i> Dashboard</a>
             </li>
-
-            <!--<li uib-dropdown ng-if="authenticated">-->
-                <!--<a href="#" ui-dropdown-toggle="">-->
-                    <!--<i class="fa fa-money"></i> Expenses <span class="caret"></span></a>-->
-                <!--<ul uib-dropdown-menu role="menu">-->
-                    <!--<li><a href="#"><i class="fa fa-plus"></i> New Expense</a></li>-->
-                    <!--&lt;!&ndash;<li><a ui-sref="expenses/list"><i class="fa fa-list-ul"></i> List</a></li>&ndash;&gt;-->
-                    <!--<li><a href="#"><i class="fa fa-search"></i> Search</a></li>-->
-                <!--</ul>-->
-            <!--</li>-->
         </ul>
         <div class="navbar-right">
             <ul class="nav navbar-nav">

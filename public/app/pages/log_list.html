@@ -1,0 +1,87 @@
+<h3>Log list</h3>
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+
+        <div>
+            Filter by Date: From and To
+        </div>
+        <br>
+
+        <button class="btn btn-primary">New</button>
+        <br>
+        <br>
+
+        <!-- this could be moved to a directive -->
+        <div class="panel panel-info timeEntry"
+             ng-repeat="timeEntry in time.timeEntries | pagination: time.currentPage * time.pageSize | limitTo: time.pageSize">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h3 class="panel-title">
+                            <i class="fa fa-calendar"></i>
+                            {{ timeEntry.date | dateToISO | date: time.dateFormat }}
+                        </h3>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="time-actions pull-right">
+                            <ul class="list-inline">
+                                <li>
+                                    <a href="#" uib-tooltip="Delete" class="actions-delete-time-entry"
+                                       ng-click="time.deleteTimeEntry()"><i class="fa fa-trash"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#" uib-tooltip="Edit" class="actions-edit-time-entry"
+                                       ng-click="time.editTimeEntry()"><i class="fa fa-pencil"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <p><span class="text-muted"><i uib-tooltip="Distance" class="fa fa-arrows-h"></i></span> {{ timeEntry.distance }} km</p>
+
+                        <p><span class="text-muted"><i uib-tooltip="Time" class="fa fa-clock-o"></i></span> {{ timeEntry.time }} </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p>
+                            <span class="text-muted">Avg. Speed (km/h): </span>
+                            <span>
+                                {{ timeEntry.averageSpeed | number: 2 }}
+                                <i uib-tooltip="Avg. Speed" class="fa fa-tachometer"></i>
+                            </span>
+
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <br>
+
+        <nav>
+            <!--<div class="pagination" ng-show="time.timeEntries.length">-->
+                <ul class="pagination">
+                    <li>
+                        <a type="button" aria-label="Previous" ng-disabled="time.currentPage == 0" ng-click="time.currentPage=time.currentPage-1">
+                            &laquo;
+                        </a>
+                    </li>
+                    <li>
+                        <span>Page {{ time.currentPage + 1}} of {{ time.numberOfPages() }}</span>
+                    </li>
+                    <li>
+                        <a type="button" aria-label="Next" ng-disabled="time.currentPage >= time.timeEntries.length/time.pageSize - 1" ng-click="time.currentPage = time.currentPage+1">
+                            &raquo;
+                        </a>
+                    </li>
+                </ul>
+            <!--</div>-->
+        </nav>
+
+    </div>
+</div>

@@ -1,0 +1,32 @@
+/* Angular-UI-Bootstrap FIX */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+/*.app-icon {*/
+    /*display: inline-block;*/
+    /*background-image: url('../icons/ic_directions_run_black_24dp_1x.png');*/
+/*}*/
+
+.timeEntry .time-actions {
+    opacity: 0.1;
+    -webkit-transition: opacity ease .2s;
+    -moz-transition: opacity ease .2s;
+    -o-transition: opacity ease .2s;
+    transition: opacity ease .2s;
+}
+
+.timeEntry:hover .time-actions {
+    opacity: 1;
+}
+
+.timeEntry .time-actions ul {
+    margin-bottom: 0;
+}
+
+.timeEntry .time-actions ul li {
+    padding-right: 3px;
+    padding-left: 3px;
+}
+
+.timeEntry .time-actions a {
+    color: #333;
+}

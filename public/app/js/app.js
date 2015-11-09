@@ -98,7 +98,25 @@ function config($stateProvider, $urlRouterProvider, $locationProvider, $authProv
                 requireLogin: true,
                 onlyAdmin: true
             }
+        })
+        .state('log_list', {
+            url         : '/log_list',
+            templateUrl : 'app/pages/log_list.html',
+            controller  : 'TimeEntryController as time',
+            data: {
+                requireLogin: true
+            }
+        })
+        .state('log_report', {
+            url         : '/log_report',
+            templateUrl : 'app/pages/log_report.html',
+            controller  : 'TimeEntryController as time',
+            data: {
+                requireLogin: true
+            }
         });
+
+
 }
 
 function run ($rootScope, $state) {
