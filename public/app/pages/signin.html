@@ -1,15 +1,24 @@
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-6 col-sm-offset-3">
     <div class="well">
         <h3>Sign In</h3>
-        <form>
+        <form name="signIn" novalidate>
             <p class="alert alert-danger" ng-if="auth.loginError"><strong>Error:</strong> {{auth.loginErrorText}}</p>
-            <div class="form-group">
-                <input type="email" class="form-control" placeholder="Email" ng-model="auth.email">
+
+            <div class="form-group has-feedback" ng-class="{ 'has-error': signIn.email.$touched && signIn.email.$invalid }">
+                <input type="email" name="email" class="form-control" placeholder="Email" ng-model="auth.user.email" required>
+                <i class="glyphicon glyphicon-envelope form-control-feedback"></i>
+                <div class="help-block" ng-messages="signIn.email.$error" ng-if="signIn.email.$touched">
+                    <div ng-messages-include="app/pages/messages.html"></div>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="password" class="form-control" placeholder="Password" ng-model="auth.password">
+            <div class="form-group has-feedback" ng-class="{ 'has-error': signIn.password.$touched && signIn.password.$invalid }">
+                <input type="password" name="password" class="form-control" placeholder="Password" ng-model="auth.user.password" ng-minlength="5" required>
+                <i class="glyphicon glyphicon-eye-close form-control-feedback"></i>
+                <div class="help-block" ng-messages="signIn.password.$error" ng-if="signIn.password.$touched">
+                    <div ng-messages-include="app/pages/messages.html"></div>
+                </div>
             </div>
-            <button class="btn btn-primary btn-block" ng-click="auth.login()">Submit</button>
+            <button class="btn btn-primary btn-block" ng-click="auth.login(signIn.$valid)" ng-disabled="signIn.$invalid">Submit</button>
         </form>
     </div>
 </div>

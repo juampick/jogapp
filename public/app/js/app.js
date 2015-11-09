@@ -1,5 +1,5 @@
 angular
-    .module('jogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'satellizer', 'toastr', 'ngMessages'])
+    .module('jogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'satellizer', 'toastr', 'ngMessages', 'angular-loading-bar', 'ngAnimate'])
     .constant('urls', {
         BASE_API: '/api/v1'
     })
@@ -119,7 +119,7 @@ function run ($rootScope, $state) {
             // Putting the user's data on $rootScope allows us to access it anywhere across the app. Here we are grabbing what is in local storage
             $rootScope.currentUser = user;
             // If the user is logged in and we hit the auth route we don't need to stay there and can send the user to the main state
-            if (toState.name === "signin") {
+            if (toState.name === "signin" || toState.name ==="signup") {
                 // Preventing the default behavior allows us to use $state.go to change states
                 event.preventDefault();
                 // go to the "main" state which in our case is '/'
@@ -133,7 +133,7 @@ function run ($rootScope, $state) {
             event.preventDefault();
             // go to the "main" state which in our case is '/'
             $state.go('/');
-        } else {
+        } else { //If some user logged:
             /* Only Admin Users */
             var onlyAdmin = toState.data.onlyAdmin;
             if (onlyAdmin && $rootScope.currentUser.role && $rootScope.currentUser.role !== 'admin'){ //If the user has a different role than admin redirect to '/'
@@ -142,7 +142,6 @@ function run ($rootScope, $state) {
                 $state.go('access-denied');
             }
         }
-
 
     });
 }

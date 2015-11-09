@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 //use JWTAuth;
+use Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
@@ -30,6 +31,15 @@ class AuthenticateController extends Controller
 
     public function authenticate(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'invalid_data'], 422);
+        }
+
         $credentials = $request->only('email', 'password');
 
         //Role check
@@ -50,6 +60,37 @@ class AuthenticateController extends Controller
         }
 
         // if no errors are encountered we can return a JWT
+        return response()->json(compact('token'));
+    }
+
+    public function signUp(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+            'confirmPassword' => 'required|same:password'
+        ]);
+
+        dd($validator->errors()->all());
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'invalid_data'], 422);
+        }
+
+        $userData = $request->only('name', 'email', 'password');
+
+        $userData['password'] =  Hash::make($userData['password']); //We do the hash of the password
+        try {
+            $user = User::create($userData);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'User already exists.'], \Illuminate\Http\Response::HTTP_CONFLICT);
+        }
+
+        //Role check
+        $customClaims = ['role' => $user->role];
+        $token = JWTAuth::fromUser($user, $customClaims);
+
         return response()->json(compact('token'));
     }
 
@@ -79,23 +120,4 @@ class AuthenticateController extends Controller
         return response()->json(compact('user'));
 
     }
-
-    public function signUp(Request $request){
-        $userData = $request->only('name', 'email', 'password');
-
-        $userData['password'] =  Hash::make($userData['password']); //We do the hash of the password
-        try {
-            $user = User::create($userData);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'User already exists.'], \Illuminate\Http\Response::HTTP_CONFLICT);
-        }
-
-        //Role check
-        $customClaims = ['role' => $user->role];
-        $token = JWTAuth::fromUser($user, $customClaims);
-
-        return response()->json(compact('token'));
-    }
-
-
 }

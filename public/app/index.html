@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../assets/bower/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../assets/bower/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="../assets/bower/angular-toastr/dist/angular-toastr.min.css" />
+    <link rel="stylesheet" href="../assets/bower/angular-loading-bar/build/loading-bar.min.css" />
     <link rel="stylesheet" href="../app/css/mycss.css" />
 
     <!-- Fonts -->
@@ -21,6 +22,8 @@
     <script src="../assets/bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="../assets/bower/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
     <script src="../assets/bower/angular-messages/angular-messages.min.js"></script>
+    <script src="../assets/bower/angular-loading-bar/build/loading-bar.min.js"></script>
+    <script src="../assets/bower/angular-animate/angular-animate.js"></script>
 
     <!-- Angular App -->
     <script src="../app/js/app.js"></script>
@@ -32,6 +35,8 @@
     <script src="../app/js/controllers/userController.js"></script>
     <script src="../app/js/controllers/authController.js"></script>
     <!--<script src="../app/js/controllers/expensesController.js"></script>-->
+    <!-- Directives -->
+    <script src="../app/js/directives/compareTo.js"></script>
 
     <base href="/">
 </head>
@@ -39,7 +44,7 @@
 <nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" ui-sref="/">JogApp</a>
+            <a class="navbar-brand" ui-sref="/"><i class="fa fa-tachometer"></i> JogApp</a>
         </div>
 
         <ul class="nav navbar-nav">
