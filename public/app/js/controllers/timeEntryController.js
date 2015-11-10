@@ -14,18 +14,22 @@ function TimeEntryController($scope, $filter, $log, timeEntry){
 
     vm.timeEntries = [];
 
-    vm.dateFormat = 'MM-dd-yyyy HH:mm:ss';
+    vm.dateTimeFormat = 'MM-dd-yyyy HH:mm:ss';
+    vm.dateFormat = 'MM-D-YY';
+    // Date filter //
+    vm.dateFrom = moment().format(vm.dateFormat);
+    vm.dateTo = moment().format(vm.dateFormat);
 
     vm.currentPage = 1;
     vm.itemsPerPage = 3;
 
-    vm.setPage = function (pageNo) {
-        vm.currentPage = pageNo;
-    };
+    //vm.setPage = function (pageNo) {
+    //    vm.currentPage = pageNo;
+    //};
 
-    vm.pageChanged = function() { //ToDo: remove?
-        $log.log('Page changed to: ' + vm.currentPage);
-    };
+    //vm.pageChanged = function() { //ToDo: remove?
+    //    $log.log('Page changed to: ' + vm.currentPage);
+    //};
 
     function getTimeEntries(){
         //self.toasts.get = self.loading('Loading notes...');

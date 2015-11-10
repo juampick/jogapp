@@ -1,9 +1,23 @@
-<h3>Log list</h3>
+<div class="page-header">
+    <h1>Log list <small>track your activities</small></h1>
+</div>
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
 
-        <div>
-            Filter by Date: From and To
+        <div class="well">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <input type="text" ng-model="time.dateFrom" class="form-control text-center"/>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <input type="text" ng-model="time.dateFrom" class="form-control text-center"/>
+                    </div>
+                </div>
+            </div>
+                <button class="btn btn-success btn-block">Search</button>
         </div>
         <br>
 
@@ -13,14 +27,14 @@
 
         <!-- this could be moved to a directive -->
         <div class="panel panel-info timeEntry"
-             ng-repeat="timeEntry in time.timeEntries.slice(((time.currentPage-1)*time.itemsPerPage), ((time.currentPage)*time.itemsPerPage))">
+             ng-repeat="timeEntry in time.timeEntries.slice(((time.currentPage-1)*time.itemsPerPage), ((time.currentPage)*time.itemsPerPage)) "> <!-- | dateFilter:time.dateFrom:time.dateTo -->
 
             <div class="panel-heading">
                <div class="row">
                     <div class="col-sm-8">
                         <h3 class="panel-title">
                             <i class="fa fa-calendar"></i>
-                            {{ timeEntry.date | dateToISO | date: time.dateFormat }}
+                            {{ timeEntry.date | dateToISO | date: time.dateTimeFormat }}
                         </h3>
                     </div>
                     <div class="col-sm-4">
@@ -51,8 +65,8 @@
                         <p>
                             <span class="text-muted">Avg. Speed (km/h): </span>
                             <span>
-                                {{ timeEntry.averageSpeed | number: 2 }}
                                 <i uib-tooltip="Avg. Speed" class="fa fa-tachometer"></i>
+                                <span class="label label-default">{{ timeEntry.averageSpeed | number: 2 }}</span>
                             </span>
 
                         </p>
@@ -61,6 +75,7 @@
 
             </div>
         </div>
+        <p class="help-block"><span class="badge">{{ time.totalItems }}</span> records</p>
 
         <br>
 

@@ -1,0 +1,50 @@
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" ui-sref="/"><i class="app-icon fa fa-tachometer"></i> JogApp</a>
+        </div>
+
+        <ul class="nav navbar-nav">
+            <li>
+                <a ui-sref="/"><i class="fa fa-home"></i> Home</a>
+            </li>
+            <li uib-dropdown ng-if="authenticated">
+                <a href="#" uib-dropdown-toggle>
+                    <i class="fa fa-list"></i> Log<span class="caret"></span></a>
+                <ul uib-dropdown-menu role="menu">
+                    <li><a ui-sref="log_list"><i class="fa fa-bars"></i> Log List</a></li>
+                    <li><a ui-sref="log_report"><i class="fa fa-line-chart"></i> Report</a></li>
+                </ul>
+            </li>
+            <li>
+                <a ui-sref="dashboard" ng-if="authenticated"><i class="fa fa-dashboard"></i> Dashboard</a>
+            </li>
+        </ul>
+        <div class="navbar-right">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a ui-sref="admin" ng-if="authenticated && currentUser.role === 'admin'"><i class="fa fa-info"></i> Admin</a>
+                </li>
+                <li class="UibDropdownController" ng-if="!authenticated">
+                    <a ui-sref="signin"><i class="fa fa-user"></i> Sign In</a>
+                </li>
+                <li uib-dropdown ng-if="authenticated">
+                    <a href="#" uib-dropdown-toggle>
+                        <span>{{ currentUser.name }}</span>
+                        <i ng-class="{'fa-user': currentUser.role === 'user', 'fa-user-secret': currentUser.role === 'admin'}" class="fa"></i> <span class="caret"></span>
+                    </a>
+                    <ul class="uib-dropdown-menu" role="menu">
+                        <li><a href="#">Profile</a></li>
+                        <li class="divider"></li>
+                        <li><a><i class="fa fa-unlock-alt"></i> Change password</a></li>
+                        <li class="divider"></li>
+                        <li><a ui-sref="/" ng-click="user.logout()"><i class="fa fa-sign-out"></i> Logout</a></li>
+                    </ul>
+                </li>
+                <li ng-if="!authenticated">
+                    <a ui-sref="signup"><i class="fa fa-plus-circle"></i> Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
