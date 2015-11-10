@@ -2,25 +2,33 @@ angular
     .module('jogApp')
     .controller('TimeEntryController', TimeEntryController);
 
-function TimeEntryController($scope, $filter, timeEntry){
+angular.module('jogApp').filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
+
+function TimeEntryController($scope, $filter, $log, timeEntry){
     vm = this;
 
     vm.timeEntries = [];
 
     vm.dateFormat = 'MM-dd-yyyy HH:mm:ss';
 
-    // Current Page //
-    vm.currentPage = 0;
-    vm.pageSize = 3;
+    vm.currentPage = 1;
+    vm.itemsPerPage = 3;
 
-    vm.numberOfPages = function()
-    {
-        return Math.ceil(vm.timeEntries.length / vm.pageSize);
+    vm.setPage = function (pageNo) {
+        vm.currentPage = pageNo;
+    };
+
+    vm.pageChanged = function() { //ToDo: remove?
+        $log.log('Page changed to: ' + vm.currentPage);
     };
 
     function getTimeEntries(){
         //self.toasts.get = self.loading('Loading notes...');
-        //if (!$rootScope.expensesFetched){
             timeEntry.get()
                 .then(function(response) {
                     angular.forEach(response, function(item){
@@ -34,11 +42,13 @@ function TimeEntryController($scope, $filter, timeEntry){
                 })
                 .finally(function(){
                     //ngToast.dismiss(self.toasts.get);
-                    //$rootScope.expensesFetched = true;
+
+                    vm.totalItems = vm.timeEntries.length;
                 });
         }
     //}
 
-    getTimeEntries();
+     getTimeEntries();
+
 
 }

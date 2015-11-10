@@ -13,9 +13,10 @@
 
         <!-- this could be moved to a directive -->
         <div class="panel panel-info timeEntry"
-             ng-repeat="timeEntry in time.timeEntries | pagination: time.currentPage * time.pageSize | limitTo: time.pageSize">
+             ng-repeat="timeEntry in time.timeEntries.slice(((time.currentPage-1)*time.itemsPerPage), ((time.currentPage)*time.itemsPerPage))">
+
             <div class="panel-heading">
-                <div class="row">
+               <div class="row">
                     <div class="col-sm-8">
                         <h3 class="panel-title">
                             <i class="fa fa-calendar"></i>
@@ -63,25 +64,12 @@
 
         <br>
 
-        <nav>
-            <!--<div class="pagination" ng-show="time.timeEntries.length">-->
-                <ul class="pagination">
-                    <li>
-                        <a type="button" aria-label="Previous" ng-disabled="time.currentPage == 0" ng-click="time.currentPage=time.currentPage-1">
-                            &laquo;
-                        </a>
-                    </li>
-                    <li>
-                        <span>Page {{ time.currentPage + 1}} of {{ time.numberOfPages() }}</span>
-                    </li>
-                    <li>
-                        <a type="button" aria-label="Next" ng-disabled="time.currentPage >= time.timeEntries.length/time.pageSize - 1" ng-click="time.currentPage = time.currentPage+1">
-                            &raquo;
-                        </a>
-                    </li>
-                </ul>
-            <!--</div>-->
-        </nav>
+       <uib-pagination
+               total-items="time.totalItems"
+               items-per-page="time.itemsPerPage"
+               ng-model="time.currentPage"
+               ng-change="time.pageChanged()">
+       </uib-pagination>
 
     </div>
 </div>
