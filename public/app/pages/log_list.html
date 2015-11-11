@@ -16,6 +16,10 @@
                         <input type="text" ng-model="time.dateFrom" class="form-control text-center"/>
                     </div>
                 </div>
+
+                <input type="text" ng-model="time.search.distance" ng-change="time.updateSearch()" />
+                <button class="btn btn-info" ng-click="time.resetFilters()">Clear Search</button>
+
             </div>
                 <button class="btn btn-success btn-block">Search</button>
         </div>
@@ -27,8 +31,7 @@
 
         <!-- this could be moved to a directive -->
         <div class="panel panel-info timeEntry"
-             ng-repeat="timeEntry in time.timeEntries.slice(((time.currentPage-1)*time.itemsPerPage), ((time.currentPage)*time.itemsPerPage)) "> <!-- | dateFilter:time.dateFrom:time.dateTo -->
-
+            ng-repeat="timeEntry in time.filtered = time.timeEntries | filter:time.search | orderBy:'date':true | startFrom:(time.currentPage-1)*time.itemsPerPage | limitTo:time.itemsPerPage">
             <div class="panel-heading">
                <div class="row">
                     <div class="col-sm-8">
@@ -79,11 +82,11 @@
 
         <br>
 
+        <!--total-items="(time.timeEntries|filter:search).length"-->
        <uib-pagination
                total-items="time.totalItems"
                items-per-page="time.itemsPerPage"
-               ng-model="time.currentPage"
-               ng-change="time.pageChanged()">
+               ng-model="time.currentPage">
        </uib-pagination>
 
     </div>

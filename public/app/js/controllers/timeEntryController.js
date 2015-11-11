@@ -2,17 +2,31 @@ angular
     .module('jogApp')
     .controller('TimeEntryController', TimeEntryController);
 
-angular.module('jogApp').filter('startFrom', function() {
-    return function(input, start) {
-        start = +start; //parse to int
-        return input.slice(start);
-    }
-});
-
-function TimeEntryController($scope, $filter, $log, timeEntry){
+function TimeEntryController($scope, $filter, $log, filterFilter, timeEntry, toastr){
     vm = this;
 
     vm.timeEntries = [];
+    vm.search = {}; //Search object
+
+    vm.resetFilters = function () {
+        vm.search = {};
+        vm.updateSearch();
+    };
+
+    vm.updateSearch = function () {
+        console.log('updateSearch');
+        vm.filtered = filterFilter(vm.timeEntries, {distance: vm.search.distance});
+        vm.totalItems = vm.filtered.length;
+        console.log('@updateSearch - totalItems: ' + vm.totalItems);
+
+    };
+
+    /*vm.update = function()
+    {
+        vm.filtered = filterFilter(vm.timeEntries, {distance: vm.search.distance});
+        vm.totalItems = vm.filtered.length;
+        console.log('@update - totalItems: ' + vm.totalItems);
+    };*/
 
     vm.dateTimeFormat = 'MM-dd-yyyy HH:mm:ss';
     vm.dateFormat = 'MM-D-YY';
@@ -33,6 +47,7 @@ function TimeEntryController($scope, $filter, $log, timeEntry){
 
     function getTimeEntries(){
         //self.toasts.get = self.loading('Loading notes...');
+            toastr.info('Loading records...');
             timeEntry.get()
                 .then(function(response) {
                     angular.forEach(response, function(item){
@@ -45,14 +60,13 @@ function TimeEntryController($scope, $filter, $log, timeEntry){
 
                 })
                 .finally(function(){
-                    //ngToast.dismiss(self.toasts.get);
-
+                    toastr.clear();
                     vm.totalItems = vm.timeEntries.length;
+                    console.log('@getTimeEntries totalItems: ' + vm.totalItems);
                 });
         }
     //}
 
      getTimeEntries();
-
-
+     //vm.update();
 }
