@@ -1,30 +1,36 @@
-angular
-    .module('jogApp')
-    .factory('timeEntry', timeEntry);
+(function () {
+    'use strict';
 
-function timeEntry($resource) {
+    angular
+        .module('jogApp')
+        .factory('timeEntry', timeEntry);
 
-    var TimeEntry = $resource('api/v1/time_entry/:id', {}, {
-        update: {
-            method: 'PUT'
-        }
-    });
+    timeEntry.$inject = ['$resource', 'urls'];
 
-    return {
-        get: function () {
-            return TimeEntry.query().$promise;
-        },
+    function timeEntry($resource, urls) {
 
-        save: function (data) {
-            return TimeEntry.save(data).$promise;
-        },
+        var TimeEntry = $resource(urls.BASE_API + '/time_entry/:id', {}, {
+            update: {
+                method: 'PUT'
+            }
+        });
 
-        update: function (data) {
-            return TimeEntry.update({id: data.id}, data).$promise;
-        },
+        return {
+            get: function () {
+                return TimeEntry.query().$promise;
+            },
 
-        delete: function (id) {
-            return TimeEntry.delete({id: id}).$promise;
+            save: function (data) {
+                return TimeEntry.save(data).$promise;
+            },
+
+            update: function (data) {
+                return TimeEntry.update({id: data.id}, data).$promise;
+            },
+
+            delete: function (id) {
+                return TimeEntry.delete({id: id}).$promise;
+            }
         }
     }
-}
+})();

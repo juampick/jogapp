@@ -2,7 +2,7 @@
     <div class="well">
         <h3>Sign Up</h3>
         <form name="signUp" novalidate>
-            <p class="alert alert-danger" ng-if="auth.signUpError"><strong>Error:</strong> {{auth.signUpErrorText}}</p>
+            <!--<p class="alert alert-danger" ng-if="auth.signUpError"><strong>Error:</strong> {{auth.signUpErrorText}}</p>-->
 
             <div class="form-group has-feedback" ng-class="{ 'has-error': signUp.name.$touched && signUp.name.$invalid }">
                 <input type="name" name="name" class="form-control" placeholder="Name" ng-model="auth.user.name" ng-minlength="3" ng-maxlength="25" required>

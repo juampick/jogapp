@@ -1,22 +1,26 @@
-angular
-    .module('jogApp')
-    .directive('compareTo', CompareTo);
+(function () {
+    'use strict';
 
-function CompareTo(){
-    return {
-        require: "ngModel",
-        scope: {
-            otherModelValue: "=compareTo"
-        },
-        link: function(scope, element, attributes, ngModel) {
+    angular
+        .module('jogApp')
+        .directive('compareTo', CompareTo);
 
-            ngModel.$validators.compareTo = function(modelValue) {
-                return modelValue == scope.otherModelValue;
-            };
+    function CompareTo() {
+        return {
+            require: "ngModel",
+            scope: {
+                otherModelValue: "=compareTo"
+            },
+            link: function (scope, element, attributes, ngModel) {
 
-            scope.$watch("otherModelValue", function() {
-                ngModel.$validate();
-            });
-        }
-    };
-};
+                ngModel.$validators.compareTo = function (modelValue) {
+                    return modelValue == scope.otherModelValue;
+                };
+
+                scope.$watch("otherModelValue", function () {
+                    ngModel.$validate();
+                });
+            }
+        };
+    }
+})();

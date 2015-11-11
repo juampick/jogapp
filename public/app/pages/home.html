@@ -1,4 +1,8 @@
 <div class="jumbotron text-center">
-    <h2>{{ title + ' ' + currentUser.name}}</h2>
-    <p>{{ subtitle }}</p>
+    <h2>{{ home.title + ' ' + home.currentUser.name}}</h2>
+    <p>{{ home.subtitle }}</p>
+
 </div>
+<p class="text-center text-muted" ng-if="!home.authenticated">
+    Sign in now! <a ui-sref="signin" href="/signin" class="btn btn-primary btn-sm">Sign in</a>
+</p>

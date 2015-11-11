@@ -3,16 +3,14 @@
 
     angular
         .module('jogApp')
-        .controller('HomeController', HomeController);
+        .controller('NavbarController', NavbarController);
 
-    HomeController.$inject = ['$scope', 'authentication'];
-    function HomeController($scope, authentication) {
+    NavbarController.$inject = ['$scope', 'authentication'];
+    function NavbarController($scope, authentication) {
         var vm = this;
-        vm.title = 'Welcome';
-        vm.subtitle = 'track your jogging';
-
         vm.authenticated = authentication.authenticated();
         vm.currentUser = authentication.currentUser();
+        vm.logout = authentication.logout;
 
         $scope.$watch( authentication.authenticated, function ( authenticated ) {
             vm.authenticated = authenticated;

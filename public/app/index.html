@@ -31,14 +31,14 @@
     <script src="../app/js/app.js"></script>
     <!-- Services -->
     <script src="../app/js/services/timeEntry.js"></script>
+    <script src="../app/js/services/authentication.js"></script>
     <!-- Controllers -->
     <script src="../app/js/controllers/homeController.js"></script>
-    <script src="../app/js/controllers/userController.js"></script>
+    <script src="../app/js/controllers/navbarController.js"></script>
     <script src="../app/js/controllers/authController.js"></script>
     <script src="../app/js/controllers/timeEntryController.js"></script>
     <!-- Directives -->
     <script src="../app/js/directives/compareTo.js"></script>
-    <script src="../app/js/directives/pagination.js"></script>
     <!-- Filters -->
     <script src="../app/js/filters/dateToISO.js"></script>
     <script src="../app/js/filters/startFrom.js"></script>
@@ -46,7 +46,7 @@
 
     <base href="/">
 </head>
-<body ng-controller="UserController as user">
+<body>
 <ng-include src="'../app/pages/navbar.html'"></ng-include>
 <div id="main">
     <div class="container" ui-view></div>

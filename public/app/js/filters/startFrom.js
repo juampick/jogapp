@@ -1,11 +1,15 @@
-angular
-    .module('jogApp')
-    .filter('startFrom', function() {
-    return function (input, start) {
-        if (input) {
-            start = +start;
-            return input.slice(start);
-        }
-        return [];
-    };
-});
+(function () {
+    'use strict';
+
+    angular
+        .module('jogApp')
+        .filter('startFrom', function () {
+            return function (input, start) {
+                if (input) {
+                    start = +start;
+                    return input.slice(start);
+                }
+                return [];
+            };
+        });
+})();

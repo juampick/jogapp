@@ -69,8 +69,6 @@ class AuthenticateController extends Controller
             'confirmPassword' => 'required|same:password'
         ]);
 
-        dd($validator->errors()->all());
-
         if ($validator->fails()) {
             return response()->json(['error' => 'invalid_data'], 422);
         }

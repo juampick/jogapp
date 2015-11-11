@@ -1,37 +1,41 @@
 <div class="page-header">
-    <h1>Log list <small>track your activities</small></h1>
+    <h3>Log list <small>track your activities</small></h3>
 </div>
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-
-        <div class="well">
+        <div class="well well-sm">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <input type="text" ng-model="time.dateFrom" class="form-control text-center"/>
+                        <input type="text" class="form-control text-center" ng-click="time.openDatePicker(time.dateFrom)" uib-datepicker-popup="{{ time.datePickerFormat }}" is-open="time.statusDateFrom.opened" ng-model="time.dateFrom" placeholder="Date From" />
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <input type="text" ng-model="time.dateFrom" class="form-control text-center"/>
+                        <input type="text" class="form-control text-center" ng-click="time.openDateToPicker($event)" uib-datepicker-popup="{{ time.datePickerFormat }}" is-open="time.statusDateTo.opened" ng-model="time.dateTo" placeholder="Date To" />
                     </div>
                 </div>
 
-                <input type="text" ng-model="time.search.distance" ng-change="time.updateSearch()" />
-                <button class="btn btn-info" ng-click="time.resetFilters()">Clear Search</button>
-
+                <!--<input type="text" ng-model="time.search.distance" ng-change="time.updateSearch()" />-->
             </div>
-                <button class="btn btn-success btn-block">Search</button>
+            <div class="row">
+                <div class="col-sm-9">
+                    <button class="btn btn-success btn-block">Search</button>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-info btn-block" ng-click="time.resetFilters()">Clear</button>
+                </div>
+            </div>
         </div>
+        <p class="help-block"><span class="badge">{{ time.totalItems }}</span> records</p>
         <br>
-
         <button class="btn btn-primary">New</button>
         <br>
         <br>
 
-        <!-- this could be moved to a directive -->
-        <div class="panel panel-info timeEntry"
-            ng-repeat="timeEntry in time.filtered = time.timeEntries | filter:time.search | orderBy:'date':true | startFrom:(time.currentPage-1)*time.itemsPerPage | limitTo:time.itemsPerPage">
+        <!-- this could be moved to a directive --> <!-- dateFilter:time.dateFrom:time.dateTo  | filter: time.search-->
+        <div class="panel panel-primary timeEntry"
+            ng-repeat="timeEntry in time.filtered = time.timeEntries | orderBy:'date':true | startFrom:(time.currentPage-1)*time.itemsPerPage | limitTo:time.itemsPerPage">
             <div class="panel-heading">
                <div class="row">
                     <div class="col-sm-8">
@@ -78,8 +82,6 @@
 
             </div>
         </div>
-        <p class="help-block"><span class="badge">{{ time.totalItems }}</span> records</p>
-
         <br>
 
         <!--total-items="(time.timeEntries|filter:search).length"-->
