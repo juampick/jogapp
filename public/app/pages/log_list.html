@@ -7,41 +7,41 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <input type="text" class="form-control text-center" ng-click="time.openDatePicker(time.dateFrom)" uib-datepicker-popup="{{ time.datePickerFormat }}" is-open="time.statusDateFrom.opened" ng-model="time.dateFrom" placeholder="Date From" />
+                        <input type="text" class="form-control text-center" ng-click="timeList.openDateFromPicker(timeList.dateFrom)" uib-datepicker-popup="{{ timeList.datePickerFormat }}" is-open="timeList.statusDateFrom.opened" ng-model="timeList.search.dateFrom" placeholder="Date From" />
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <input type="text" class="form-control text-center" ng-click="time.openDateToPicker($event)" uib-datepicker-popup="{{ time.datePickerFormat }}" is-open="time.statusDateTo.opened" ng-model="time.dateTo" placeholder="Date To" />
+                        <input type="text" class="form-control text-center" ng-click="timeList.openDateToPicker($event)" uib-datepicker-popup="{{ timeList.datePickerFormat }}" is-open="timeList.statusDateTo.opened" ng-model="timeList.search.dateTo" placeholder="Date To" />
                     </div>
                 </div>
 
-                <!--<input type="text" ng-model="time.search.distance" ng-change="time.updateSearch()" />-->
+                <!--<input type="text" ng-model="timeList.search.distance" ng-change="timeList.updateSearch()" />-->
             </div>
             <div class="row">
                 <div class="col-sm-9">
                     <button class="btn btn-success btn-block">Search</button>
                 </div>
                 <div class="col-sm-3">
-                    <button class="btn btn-info btn-block" ng-click="time.resetFilters()">Clear</button>
+                    <button class="btn btn-info btn-block" ng-click="timeList.resetFilters()">Clear</button>
                 </div>
             </div>
         </div>
-        <p class="help-block"><span class="badge">{{ time.totalItems }}</span> records</p>
+        <p class="help-block"><span class="badge">{{ timeList.totalItems }}</span> records</p>
         <br>
-        <button class="btn btn-primary">New</button>
+        <button class="btn btn-primary" ui-sref="log_create">New</button>
         <br>
         <br>
 
-        <!-- this could be moved to a directive --> <!-- dateFilter:time.dateFrom:time.dateTo  | filter: time.search-->
+        <!-- this could be moved to a directive --> <!-- dateFilter:timeList.dateFrom:timeList.dateTo  | filter: timeList.search-->
         <div class="panel panel-primary timeEntry"
-            ng-repeat="timeEntry in time.filtered = time.timeEntries | orderBy:'date':true | startFrom:(time.currentPage-1)*time.itemsPerPage | limitTo:time.itemsPerPage">
+            ng-repeat="timeEntry in timeList.filtered = timeList.timeEntries | orderBy:'date':true | startFrom:(timeList.currentPage-1)*timeList.itemsPerPage | limitTo:timeList.itemsPerPage">
             <div class="panel-heading">
                <div class="row">
                     <div class="col-sm-8">
                         <h3 class="panel-title">
                             <i class="fa fa-calendar"></i>
-                            {{ timeEntry.date | dateToISO | date: time.dateTimeFormat }}
+                            {{ timeEntry.date | dateToISO | date: timeList.dateTimeFormat }}
                         </h3>
                     </div>
                     <div class="col-sm-4">
@@ -49,11 +49,11 @@
                             <ul class="list-inline">
                                 <li>
                                     <a href="#" uib-tooltip="Delete" class="actions-delete-time-entry"
-                                       ng-click="time.deleteTimeEntry()"><i class="fa fa-trash"></i></a>
+                                       ng-click="timeList.deleteTimeEntry(timeEntry)"><i class="fa fa-trash"></i></a>
                                 </li>
                                 <li>
                                     <a href="#" uib-tooltip="Edit" class="actions-edit-time-entry"
-                                       ng-click="time.editTimeEntry()"><i class="fa fa-pencil"></i></a>
+                                       ng-click="timeList.editTimeEntry(timeEntry)"><i class="fa fa-pencil"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -64,8 +64,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-8">
-                        <p><span class="text-muted"><i uib-tooltip="Distance" class="fa fa-arrows-h"></i></span> {{ timeEntry.distance }} km</p>
-
+                        <p><span class="text-muted"><i uib-tooltip="Distance" class="fa fa-road"></i></span> {{ timeEntry.distance }} km</p>
                         <p><span class="text-muted"><i uib-tooltip="Time" class="fa fa-clock-o"></i></span> {{ timeEntry.time }} </p>
                     </div>
                     <div class="col-sm-4">
@@ -84,11 +83,11 @@
         </div>
         <br>
 
-        <!--total-items="(time.timeEntries|filter:search).length"-->
+        <!--total-items="(timeList.timeEntries|filter:search).length"-->
        <uib-pagination
-               total-items="time.totalItems"
-               items-per-page="time.itemsPerPage"
-               ng-model="time.currentPage">
+               total-items="timeList.totalItems"
+               items-per-page="timeList.itemsPerPage"
+               ng-model="timeList.currentPage">
        </uib-pagination>
 
     </div>

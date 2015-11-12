@@ -1,11 +1,6 @@
 /* Angular-UI-Bootstrap FIX */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
-/*.app-icon {*/
-    /*display: inline-block;*/
-    /*background-image: url('../icons/ic_directions_run_black_24dp_1x.png');*/
-/*}*/
-
 .timeEntry .time-actions {
     opacity: 0.1;
     -webkit-transition: opacity ease .2s;

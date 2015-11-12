@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('jogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'satellizer', 'toastr', 'ngMessages', 'angular-loading-bar', 'ngAnimate'])
+        .module('jogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'satellizer', 'toastr', 'ngMessages', 'angular-loading-bar', 'ngAnimate', 'ui.mask'])
         .constant('urls', {
             BASE_API: '/api/v1'
         })
@@ -113,7 +113,16 @@
             .state('log_list', {
                 url: '/log_list',
                 templateUrl: 'app/pages/log_list.html',
-                controller: 'TimeEntryController as time',
+                controller: 'TimeEntryListController as timeList',
+                data: {
+                    requireLogin: true
+                }
+            })
+            .state('log_create', {
+                params: { data: {}},
+                url: '/log_create',
+                templateUrl: 'app/pages/log_create.html',
+                controller: 'TimeEntryFormController as timeForm',
                 data: {
                     requireLogin: true
                 }
@@ -121,7 +130,7 @@
             .state('log_report', {
                 url: '/log_report',
                 templateUrl: 'app/pages/log_report.html',
-                controller: 'TimeEntryController as time',
+                controller: 'TimeEntryReportController as timeReport',
                 data: {
                     requireLogin: true
                 }

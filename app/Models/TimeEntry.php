@@ -18,7 +18,7 @@ class TimeEntry extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'role'];
+    protected $fillable = ['date', 'distance', 'time', 'user_id'];
 
 
     public function user()
