@@ -32,8 +32,14 @@
                     <div ng-messages-include="app/pages/messages.html"></div>
                 </div>
             </div>
-            <button class="btn btn-primary btn-block" ng-click="timeCreate.create(newLog.$valid)" ng-disabled="newLog.$invalid">Create
-            </button>
+            <div class="row">
+                <div class="col-sm-8">
+                    <button class="btn btn-primary btn-block" ng-click="timeCreate.create(newLog.$valid)" ng-disabled="newLog.$invalid">Create</button>
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-secondary btn-block" ui-sref="log_list">Back</button>
+                </div>
+            </div>
             <br>
         </form>
     </div>

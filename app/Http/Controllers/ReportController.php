@@ -9,28 +9,39 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
     public function __construct()
     {
-        //$this->middleware('jwt.auth');
+//        $this->middleware('jwt.auth');
     }
 
-    public function getReport($id)
+    /**
+     * Report on Average Speed & Distance per Week
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getReport($userId)
     {
+        $user = Auth::user();
+        if (isset($user) && ($user->id != $userId)) {
+            return response()->json(['error' => 'You are not allowed to see this']);
+        }
 
-        //Report on average speed & distance per week
+        $cTimeEntries = TimeEntry::where('user_id', $userId)->select('date', 'distance', 'time')->get();
 
-        $aTimeEntries = User::find($id)->timeEntries;
+        if ($cTimeEntries->isEmpty()) {
+            return response()->json('no records');
+        }
 
-        $avgSpeedSums = 0;
-        $distanceSum = 0;
-        $iQuantity = count($aTimeEntries);
-        foreach ($aTimeEntries as $timeEntry){
+        foreach ($cTimeEntries as $timeEntry) {
             $hours = null;
             $minutes = null;
             $seconds = null;
+
+            $timeEntry->distance = doubleval($timeEntry->distance);
 
             sscanf($timeEntry->time, "%d:%d:%d", $hours, $minutes, $seconds); //Parsing the formatted string: HH:mm:ss to splitted into parts
             $timeInSeconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours;
@@ -38,14 +49,23 @@ class ReportController extends Controller
 
             $avgSpeed = $timeEntry->distance / $timeInHours;
 
-            $avgSpeedSums += $avgSpeed;
-            $distanceSum += $timeEntry->distance;
+            $carbonDate = Carbon::createFromFormat('Y-m-d H:i:s', $timeEntry->date);
+            $weekOfYear = $carbonDate->weekOfYear;
+            $weekYear = $carbonDate->year . $weekOfYear;
+
+            $timeEntry->avgSpeed = $avgSpeed;
+            $timeEntry->weekYear = $weekYear;
         }
 
-        $finalAverageSpeed = $avgSpeedSums / $iQuantity;
-        $finalAverageDistance = $distanceSum / $iQuantity;
+        $aTimeEntriesGroupedByWeek = $cTimeEntries->groupBy('weekYear');
 
-        //ToDo: this is all in total.. (genearl... we have to divided into weeks... )
-        return response()->json(['distanceAvg' => $finalAverageDistance, 'speedAvg' => $finalAverageSpeed]);
+        $aResultsByWeek = [];
+        foreach ($aTimeEntriesGroupedByWeek as $timeEntryWeekKey => $timeEntryWeekValue) {
+            $aResultsByWeek[$timeEntryWeekKey]['avgSpeedSums'] = $timeEntryWeekValue->avg('avgSpeed');
+            $aResultsByWeek[$timeEntryWeekKey]['avgDistance'] = $timeEntryWeekValue->avg('distance');
+        }
+
+//        return response()->json(['items' => $aTimeEntriesGroupedByWeek, 'results' => $aResultsByWeek]);
+        return response()->json(['results' => $aResultsByWeek]);
     }
 }

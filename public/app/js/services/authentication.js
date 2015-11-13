@@ -151,6 +151,14 @@
 
             authenticated: function () {
                 return authentication.authenticated;
+            },
+
+            setAuthenticated: function($authenticated){
+                authentication.authenticated = $authenticated;
+            },
+
+            setCurrentUser: function($currentUser){
+                authentication.curr = $currentUser;
             }
         }
     }

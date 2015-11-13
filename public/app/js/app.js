@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('jogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'satellizer', 'toastr', 'ngMessages', 'angular-loading-bar', 'ngAnimate', 'ui.mask'])
+        .module('jogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'satellizer', 'toastr', 'ngMessages', 'angular-loading-bar', 'ngAnimate', 'ui.mask', 'chart.js'])
         .constant('urls', {
             BASE_API: '/api/v1'
         })
         .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', '$httpProvider', '$provide', 'urls', config])
-        .run(['authentication', run]);
+        .run(['$rootScope', 'authentication', 'toastr', run]);
 
     //.constant('USER_ROLES', {
     //    all: '*',
@@ -18,7 +18,7 @@
 
     function config($stateProvider, $urlRouterProvider, $locationProvider, $authProvider, $httpProvider, $provide, urls) {
 
-        function redirectWhenLoggedOut($q, $injector) {
+        function redirectWhenLoggedOut($q, $injector, $rootScope) {
             return {
                 responseError: function (rejection) {
                     // Need to use $injector.get to bring in $state or else we get a circular dependency error
@@ -34,6 +34,8 @@
                             localStorage.removeItem('user');
                             // Send the user to the auth state so they can login
                             $state.go('signin');
+
+                            $rootScope.$emit('loggedOut');
                         }
                     });
 
@@ -42,16 +44,14 @@
             }
         }
 
-        // Setup for the $httpInterceptor
+        //Setup for the $httpInterceptor
         $provide.factory('redirectWhenLoggedOut', redirectWhenLoggedOut);
         // Push the new factory onto the $http interceptor array
         $httpProvider.interceptors.push('redirectWhenLoggedOut');
-        // Satellizer config:
+
+        // Satellizer config: //
         $authProvider.loginUrl = urls.BASE_API + '/authenticate';
         $authProvider.signupUrl = urls.BASE_API + '/authenticate/signup';
-
-        //// Redirect to the auth state if any other states
-        //// are requested other than users
 
         // Set default
         $urlRouterProvider.otherwise('/');
@@ -60,7 +60,7 @@
         $locationProvider.html5Mode(true);
 
         $stateProvider
-            // route for the home page
+        // route for the home page
             .state('/', {
                 url: '/',
                 templateUrl: 'app/pages/home.html',
@@ -127,7 +127,7 @@
                 }
             })
             .state('log_edit', {
-                params: { data: {}},
+                params: {data: {}},
                 url: '/log_edit/:id',
                 templateUrl: 'app/pages/log_edit.html',
                 controller: 'TimeEntryEditController as timeEdit',
@@ -144,10 +144,16 @@
                 }
             });
 
-
     }
 
-    function run(authentication) {
+    function run($rootScope, authentication, toastr) {
         authentication.stateChange(event);
+
+        $rootScope.$on('loggedOut', function(event) {
+            toastr.error('You are not allowed to see this. Please Sign-in again');
+
+            authentication.setAuthenticated(false);
+            authentication.setCurrentUser(null);
+        });
     }
 })();

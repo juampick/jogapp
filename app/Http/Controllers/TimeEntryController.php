@@ -26,7 +26,7 @@ class TimeEntryController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $timeEntries = TimeEntry::where('user_id', $user->id)->get();
+        $timeEntries = TimeEntry::where('user_id', $user->id)->select('id', 'date', 'distance', 'time')->get();
 
         foreach ($timeEntries as &$timeEntry){
             $timeEntry->distance = doubleval($timeEntry->distance);

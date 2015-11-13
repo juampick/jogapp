@@ -1,5 +1,51 @@
 <div class="page-header">
-    <h3>Log report <small>see your results</small></h3>
+    <h3>Log report
+        <small>average speed & distance per week</small>
+    </h3>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="panel panel-default" id="speed-chart">
+            <div class="panel-heading">Avg. Speed (Km/h)</div>
+            <div class="panel-body">
+                <canvas id="speed-chart-canvas" class="chart chart-line" chart-data="timeReport.dataAvgSpeed"
+                        chart-labels="timeReport.labels" chart-legend="timeReport.true" chart-series="timeReport.seriesAvgSpeed"
+                        chart-click="timeReport.onClickSpeed">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="panel panel-default" id="distance-chart">
+            <div class="panel-heading">Avg. Distance (Km)</div>
+            <div class="panel-body">
+                <canvas id="distance-chart-canvas" class="chart chart-line" chart-data="timeReport.dataAvgDistance"
+                        chart-labels="timeReport.labels" chart-legend="timeReport.true" chart-series="timeReport.seriesAvgDistance"
+                        chart-click="timeReport.onClickDistance">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table">
+            <thead>
+            <th>Year</th>
+            <th>Week</th>
+            <th>Avg. Distance</th>
+            <th>Avg. Speed</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="(reportWeekKey, reportWeekData) in timeReport.reportList.results">
+                <td>{{ reportWeekKey | limitTo:4:0 }}</td>
+                <td>{{ reportWeekKey | limitTo:2:4 }}</td>
+                <td>{{ reportWeekData.avgDistance | number : 2 }} km</td>
+                <td>{{ reportWeekData.avgSpeedSums | number: 2}} km/h</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-Report on average speed & distance per week
+
