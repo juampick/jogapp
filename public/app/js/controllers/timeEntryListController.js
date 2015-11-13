@@ -29,7 +29,8 @@
         };
         // DatePicker //
 
-        vm.dateTimeFormat = 'MM-dd-yyyy HH:mm:ss';
+        //vm.dateTimeFormat = 'MM-dd-yyyy HH:mm:ss';
+        vm.dateTimeFormat = 'MM-dd-yyyy';
         vm.dateFormat = 'MM-D-YYYY';
         // Date filter //
         //vm.dateFrom = moment().format(vm.dateFormat);
@@ -90,10 +91,11 @@
         };
 
         vm.editTimeEntry = function (timeEntry) {
-
-            $state.go('log_create', { data: timeEntry });
-
-
+            $state.go('log_edit',
+                {
+                    id: timeEntry.id,
+                    data: timeEntry
+                });
         };
 
         getTimeEntries();

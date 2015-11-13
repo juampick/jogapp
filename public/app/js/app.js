@@ -119,10 +119,18 @@
                 }
             })
             .state('log_create', {
-                params: { data: {}},
                 url: '/log_create',
                 templateUrl: 'app/pages/log_create.html',
-                controller: 'TimeEntryFormController as timeForm',
+                controller: 'TimeEntryCreateController as timeCreate',
+                data: {
+                    requireLogin: true
+                }
+            })
+            .state('log_edit', {
+                params: { data: {}},
+                url: '/log_edit/:id',
+                templateUrl: 'app/pages/log_edit.html',
+                controller: 'TimeEntryEditController as timeEdit',
                 data: {
                     requireLogin: true
                 }

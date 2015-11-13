@@ -27,6 +27,11 @@ class TimeEntryController extends Controller
     {
         $user = Auth::user();
         $timeEntries = TimeEntry::where('user_id', $user->id)->get();
+
+        foreach ($timeEntries as &$timeEntry){
+            $timeEntry->distance = doubleval($timeEntry->distance);
+        }
+
         return $timeEntries;
     }
 
@@ -73,7 +78,25 @@ class TimeEntryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'date' => 'required|date',
+            'distance' => 'required|numeric',
+            'time' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'invalid_data'], 422);
+        }
+
+        $timeEntry = TimeEntry::find($id);
+
+        if (isset($timeEntry)){
+            $timeEntry->date = $request->input('date');
+            $timeEntry->distance = $request->input('distance');
+            $timeEntry->time = $request->input('time');
+            $timeEntry->save();
+        }
+        return $timeEntry;
     }
 
     /**

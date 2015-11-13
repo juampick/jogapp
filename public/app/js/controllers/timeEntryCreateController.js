@@ -3,18 +3,14 @@
 
     angular
         .module('jogApp')
-        .controller('TimeEntryFormController', TimeEntryFormController);
+        .controller('TimeEntryCreateController', TimeEntryCreateController);
 
-    TimeEntryFormController.$inject = ['$scope', '$filter', '$state', 'authentication', 'timeEntry', 'toastr', '$stateParams'];
+    TimeEntryCreateController.$inject = ['$scope', '$filter', '$state', 'authentication', 'timeEntry', 'toastr'];
 
-    function TimeEntryFormController($scope, $filter, $state, authentication, timeEntry, toastr, $stateParams) {
+    function TimeEntryCreateController($scope, $filter, $state, authentication, timeEntry, toastr) {
         var vm = this;
 
         vm.timeEntry = {};
-
-        if ($stateParams.data !== undefined){
-            vm.timeEntry = $stateParams.data;
-        }
 
         /* Form: DatePicker config: */
         vm.timeEntry.date = new Date();
@@ -28,7 +24,6 @@
 
         vm.create = function (isValid) {
             if (isValid) {
-                //toastr.info('Creating log');
                 vm.userToSend = vm.timeEntry;
                 vm.userToSend.user_id = authentication.currentUser().id;
                 vm.userToSend.date = $filter('date')(vm.timeEntry.date, 'yyyy-MM-dd HH:mm:ss');
