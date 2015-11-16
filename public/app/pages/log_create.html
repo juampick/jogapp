@@ -2,6 +2,16 @@
     <div class="well">
         <h3>Create New Log</h3>
 
+        <div class="well well-sm" ng-if="timeCreate.currentUser.role === 'admin' || timeCreate.currentUser.role === 'user_manager'">
+            <div class="form-group">
+                <label for="user">User</label>
+                <select id="user" name="user" class="form-control" ng-model="timeCreate.userSelected" ng-options="option.name for option in timeCreate.usersList track by option.id" ng-change="timeCreate.changeUserSelect(user)">
+                    <option value="">-- Select user --</option>
+                </select>
+                <p class="help-block"></p>
+            </div>
+        </div>
+
         <form name="newLog" novalidate>
             <div class="form-group has-feedback" ng-class="{ 'has-error': newLog.date.$touched && newLog.date.$invalid }">
                 <div class="input-group date">

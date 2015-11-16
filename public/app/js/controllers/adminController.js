@@ -20,12 +20,16 @@
         });
 
         vm.usersList = [];
+        // Pagination //
+        vm.currentPage = 1;
+        vm.itemsPerPage = 3;
 
         function getUsers() {
             userService.get()
                 .then(function (response) {
                     vm.usersList = [];
                     vm.usersList = response;
+                    vm.totalItems = vm.usersList.length;
                 })
                 .catch(function () {
 
@@ -46,6 +50,12 @@
 
                 });
 
+        };
+
+        vm.refresh = function(){
+            toastr.info('Loading users...');
+            getUsers();
+            toastr.clear();
         };
     }
 })();

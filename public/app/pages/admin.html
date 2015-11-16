@@ -1,5 +1,12 @@
 <h3>Admin page</h3>
 
+<div class="row">
+    <div class="col-sm-12">
+        <button class="btn btn-primary btn-xs" ui-sref="admin_create" ><i class="fa fa-plus"></i> New User</button>
+        <button class="btn btn-success btn-xs" ng-click="admin.refresh()"><i class="fa fa-refresh"></i></button>
+        <span class="badge">{{ admin.totalItems }}</span> records
+    </div>
+</div>
 <table class="table table-striped">
     <thead>
         <th>User</th>
@@ -8,7 +15,7 @@
         <th>Date Created</th>
     </thead>
     <tbody>
-        <tr ng-repeat="user in admin.usersList">
+        <tr ng-repeat="user in admin.usersList | startFrom:(admin.currentPage-1)*admin.itemsPerPage | limitTo:admin.itemsPerPage">
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.role }}</td>
@@ -22,3 +29,9 @@
         </tr>
     </tbody>
 </table>
+
+<uib-pagination class="pagination-sm"
+        total-items="admin.totalItems"
+        items-per-page="admin.itemsPerPage"
+        ng-model="admin.currentPage">
+</uib-pagination>

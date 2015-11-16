@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -57,21 +58,41 @@ class TimeEntryTableSeeder extends Seeder
         DB::table('time_entries')->delete();
 
         $timesEntries = array(
-            ['date' => new DateTime(), 'distance' => '10.10', 'time' => '00:14:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '10.50', 'time' => '00:13:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '05.43', 'time' => '00:12:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '10.10', 'time' => '00:12:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '3.03', 'time' => '00:10:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '10.10', 'time' => '00:54:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '9.78', 'time' => '01:02:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '8.32', 'time' => '01:23:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '10.10', 'time' => '00:23:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '5.34', 'time' => '00:35:31', 'user_id' => 1],
-            ['date' => new DateTime(), 'distance' => '04.54', 'time' => '00:35:31', 'user_id' => 2],
-            ['date' => new DateTime(), 'distance' => '10.10', 'time' => '00:23:31', 'user_id' => 2],
-            ['date' => new DateTime(), 'distance' => '54.31', 'time' => '02:50:00', 'user_id' => 2],
-            ['date' => new DateTime(), 'distance' => '05.15', 'time' => '00:23:31', 'user_id' => 2],
-            ['date' => new DateTime(), 'distance' => '10.10', 'time' => '00:23:31', 'user_id' => 2]
+            ['date' => Carbon::now()->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:14:31', 'user_id' => 1],
+            ['date' => Carbon::now()->format('Y-m-d'), 'distance' => '10.50', 'time' => '00:13:31', 'user_id' => 1],
+            ['date' => Carbon::now()->format('Y-m-d'), 'distance' => '05.43', 'time' => '00:12:31', 'user_id' => 1],
+            ['date' => Carbon::now()->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:12:31', 'user_id' => 1],
+            ['date' => Carbon::now()->format('Y-m-d'), 'distance' => '3.03', 'time' => '00:10:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 10, 10)->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:54:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 10, 15)->format('Y-m-d'), 'distance' => '9.78', 'time' => '01:02:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 10, 1)->format('Y-m-d'), 'distance' => '8.32', 'time' => '01:23:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 10, 19)->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:23:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 10, 10)->format('Y-m-d'), 'distance' => '5.34', 'time' => '00:35:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 10, 25)->format('Y-m-d'), 'distance' => '04.54', 'time' => '00:35:31', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 9, 14)->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:23:31', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 9, 11)->format('Y-m-d'), 'distance' => '54.31', 'time' => '02:50:00', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 8, 19)->format('Y-m-d'), 'distance' => '05.15', 'time' => '00:23:31', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 10, 29)->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:54:46', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 6, 30)->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:54:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 5, 8)->format('Y-m-d'), 'distance' => '9.78', 'time' => '01:02:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 10, 14)->format('Y-m-d'), 'distance' => '8.32', 'time' => '01:23:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 10, 10)->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:54:46', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 10, 8)->format('Y-m-d'), 'distance' => '5.34', 'time' => '00:35:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 11, 14)->format('Y-m-d'), 'distance' => '04.54', 'time' => '00:35:31', 'user_id' => 3],
+            ['date' => Carbon::createFromDate(2015, 11, 13)->format('Y-m-d'), 'distance' => '9.4', 'time' => '00:54:46', 'user_id' => 3],
+            ['date' => Carbon::createFromDate(2015, 9, 10)->format('Y-m-d'), 'distance' => '54.31', 'time' => '02:50:00', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 9, 11)->format('Y-m-d'), 'distance' => '05.15', 'time' => '00:54:46', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 9, 2)->format('Y-m-d'), 'distance' => '9.4', 'time' => '00:54:46', 'user_id' => 4],
+            ['date' => Carbon::createFromDate(2015, 9, 3)->format('Y-m-d'), 'distance' => '9.4', 'time' => '00:54:31', 'user_id' => 4],
+            ['date' => Carbon::createFromDate(2015, 9, 4)->format('Y-m-d'), 'distance' => '9.78', 'time' => '01:02:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 9, 6)->format('Y-m-d'), 'distance' => '8.32', 'time' => '01:23:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 8, 15)->format('Y-m-d'), 'distance' => '9.4', 'time' => '00:54:46', 'user_id' => 4],
+            ['date' => Carbon::createFromDate(2015, 8, 17)->format('Y-m-d'), 'distance' => '5.34', 'time' => '00:35:31', 'user_id' => 1],
+            ['date' => Carbon::createFromDate(2015, 11, 10)->format('Y-m-d'), 'distance' => '04.54', 'time' => '00:35:31', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 9, 15)->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:23:31', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 8, 7)->format('Y-m-d'), 'distance' => '54.31', 'time' => '02:50:00', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 8, 24)->format('Y-m-d'), 'distance' => '05.15', 'time' => '00:23:31', 'user_id' => 2],
+            ['date' => Carbon::createFromDate(2015, 10, 23)->format('Y-m-d'), 'distance' => '10.10', 'time' => '00:23:31', 'user_id' => 2]
         );
 
         // Loop through each user above and create the record for them in the database
@@ -107,22 +128,6 @@ class RoleTableSeeder extends Seeder
         $adminRole->name = 'admin';
         $adminRole->display_name = 'Admin';
         $adminRole->save();
-
-        # Creating Permissions #
-        $createTimeEntriesPerm = new Permission();
-        $createTimeEntriesPerm->name = 'create_time_entries';
-        $createTimeEntriesPerm->display_name = 'Create Time Entries';
-        $createTimeEntriesPerm->save();
-
-        $deleteTimeEntriesPerm = new Permission();
-        $deleteTimeEntriesPerm->name = 'delete_time_entries';
-        $deleteTimeEntriesPerm->display_name = 'Delete Time Entries';
-        $deleteTimeEntriesPerm->save();
-
-        $editTimeEntriesPerm = new Permission();
-        $editTimeEntriesPerm->name = 'edit_time_entries';
-        $editTimeEntriesPerm->display_name = 'Edit Time Entries';
-        $editTimeEntriesPerm->save();
 
         # Assign Roles to Users #
         //Find Users

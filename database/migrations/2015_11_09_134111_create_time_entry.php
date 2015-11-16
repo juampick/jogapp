@@ -14,7 +14,7 @@ class CreateTimeEntry extends Migration
     {
         Schema::create('time_entries', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('date');
+            $table->date('date');
             $table->decimal('distance');
             $table->time('time');
             $table->integer('user_id')->unsigned();

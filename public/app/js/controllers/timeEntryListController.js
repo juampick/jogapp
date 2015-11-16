@@ -5,17 +5,25 @@
         .module('jogApp')
         .controller('TimeEntryListController', TimeEntryListController);
 
-    TimeEntryListController.$inject = ['$scope', '$state', 'filterFilter', 'timeEntry', 'toastr', 'authentication', 'user'];
+    TimeEntryListController.$inject = ['$scope', '$state', '$filter', 'filterFilter', 'timeEntry', 'toastr', 'authentication', 'user'];
 
-    function TimeEntryListController($scope, $state, filterFilter, timeEntryService, toastr, authentication, userService) {
+    function TimeEntryListController($scope, $state, $filter, filterFilter, timeEntryService, toastr, authentication, userService) {
         var vm = this;
 
         vm.timeEntries = [];
-        vm.search = {}; //Search object
+        vm.timeEntriesOriginal = [];
+        vm.search= {
+            dateFrom: '',
+            dateTo: ''
+        }; //Search object
 
         //Auth
         vm.authenticated = authentication.authenticated();
         vm.currentUser = authentication.currentUser();
+        $scope.$watch(authentication.authenticated, function (authenticated) {
+            vm.authenticated = authenticated;
+            vm.currentUser = authentication.currentUser();
+        });
 
         // DatePicker //
         vm.datePickerFormat = 'MM-dd-yyyy';
@@ -32,29 +40,42 @@
             vm.statusDateTo.opened = true;
         };
         // DatePicker //
-
-        //vm.dateTimeFormat = 'MM-dd-yyyy HH:mm:ss';
-        vm.dateTimeFormat = 'MM-dd-yyyy';
-        vm.dateFormat = 'MM-D-YYYY';
-        // Date filter //
-        //vm.dateFrom = moment().format(vm.dateFormat);
-        //vm.dateTo = moment().format(vm.dateFormat);
+        //vm.dateFormat = 'MM-dd-yyyy';
 
         // Pagination //
         vm.currentPage = 1;
-        vm.itemsPerPage = 3;
+        vm.itemsPerPage = 5;
 
         vm.resetFilters = function () {
-            vm.search = {};
+            vm.search.dateFrom = '';
+            vm.search.dateTo = '';
             vm.updateSearch();
         };
 
         vm.updateSearch = function () {
             console.log('updateSearch');
-            vm.filtered = filterFilter(vm.timeEntries, {distance: vm.search.distance});
-            vm.totalItems = vm.filtered.length;
+            //vm.filtered = filterFilter(vm.timeEntries, {distance: vm.search.distance}); //ToDo: take off this if not distance searched
+            //vm.totalItems = vm.filtered.length;
+
+            vm.timeEntries = vm.timeEntriesOriginal;
+            vm.totalItems = vm.timeEntries.length;
+
             console.log('@updateSearch - totalItems: ' + vm.totalItems);
 
+        };
+
+        vm.search = function(){
+            vm.search.dateFrom = $filter('date')(vm.search.dateFrom, "MM-dd-yyyy");
+            vm.search.dateTo = $filter('date')(vm.search.dateTo, "MM-dd-yyyy");
+
+            if (vm.search.dateFrom !== '' && vm.search.dateTo !== '') {
+                vm.newTimesEntriesList = $filter('dateFilter')(vm.timeEntriesOriginal, vm.search.dateFrom, vm.search.dateTo);
+                console.debug(vm.newTimesEntriesList);
+
+                vm.timeEntries = [];
+                vm.timeEntries = vm.newTimesEntriesList;
+                vm.totalItems = vm.timeEntries.length;
+            }
         };
 
         function getTimeEntries(selectedUserId) {
@@ -75,19 +96,20 @@
                     toastr.clear();
                     vm.totalItems = vm.timeEntries.length;
                     console.log('@getTimeEntries totalItems: ' + vm.totalItems);
+                    vm.timeEntriesOriginal = vm.timeEntries;
                 });
         }
 
         vm.deleteTimeEntry = function (timeEntry) {
             toastr.info('Deleting Log..');
             timeEntryService.delete(timeEntry.id)
-                .then(function(){
+                .then(function () {
                     toastr.success('Log has been deleted successfully');
                 })
-                .catch(function(error){
+                .catch(function (error) {
                     toastr.error('There was en error deleting the TimeEntry', error.data.error);
                 })
-                .finally(function() {
+                .finally(function () {
                     getTimeEntries();
                     //updateSearch(); ???
                     toastr.clear();
@@ -104,44 +126,38 @@
 
         getTimeEntries();
 
-        $scope.$watch( authentication.authenticated, function ( authenticated ) {
-            vm.authenticated = authenticated;
-            vm.currentUser = authentication.currentUser();
-        });
-
         vm.usersList = [];
         vm.userSelected = {};
 
         function getUsers() {
             userService.get()
                 .then(function (response) {
-                    /*vm.users = [];
-                    angular.forEach(response, function (item) {
-                        var timeInHours = moment.duration(item.time, "HH:mm:ss: A").asHours();
-                        item.averageSpeed = (item.distance / timeInHours);
-                        vm.timeEntries.push(item);
-                    });*/
                     vm.usersList = response;
                 })
                 .catch(function () {
 
                 })
                 .finally(function () {
-                    /*toastr.clear();
-                    vm.totalItems = vm.timeEntries.length;
-                    console.log('@getTimeEntries totalItems: ' + vm.totalItems);*/
+
                 });
         }
-        getUsers();
 
-        vm.changeUserSelect = function(){
-           console.debug(vm.userSelected);
-            if (vm.userSelected !== null){
+        if (vm.currentUser.role !== 'user') {
+            getUsers();
+        }
+
+        vm.changeUserSelect = function () {
+            console.debug(vm.userSelected);
+            if (vm.userSelected !== null) {
                 getTimeEntries(vm.userSelected.id);
             } else {
                 vm.timeEntries = [];
                 vm.totalItems = 0;
             }
+        };
+
+        vm.refresh = function () {
+            getTimeEntries();
         };
 
     }

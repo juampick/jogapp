@@ -3,7 +3,7 @@
 </div>
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-        <div class="well well-sm" ng-if="timeList.currentUser.role === 'admin'">
+        <div class="well well-sm" ng-if="timeList.currentUser.role === 'admin' || timeList.currentUser.role === 'user_manager'">
             <div class="form-group">
                 <label for="user">User</label>
                 <select id="user" name="user" class="form-control" ng-model="timeList.userSelected" ng-options="option.name for option in timeList.usersList track by option.id" ng-change="timeList.changeUserSelect(user)">
@@ -16,12 +16,12 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <input type="text" class="form-control text-center" ng-click="timeList.openDateFromPicker(timeList.dateFrom)" uib-datepicker-popup="{{ timeList.datePickerFormat }}" is-open="timeList.statusDateFrom.opened" ng-model="timeList.search.dateFrom" placeholder="Date From" />
+                        <input type="text" class="form-control text-center" ng-click="timeList.openDateFromPicker(timeList.search.dateFrom)" uib-datepicker-popup="{{ timeList.datePickerFormat }}" is-open="timeList.statusDateFrom.opened" ng-model="timeList.search.dateFrom" placeholder="Date From" />
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <input type="text" class="form-control text-center" ng-click="timeList.openDateToPicker($event)" uib-datepicker-popup="{{ timeList.datePickerFormat }}" is-open="timeList.statusDateTo.opened" ng-model="timeList.search.dateTo" placeholder="Date To" />
+                        <input type="text" class="form-control text-center" ng-click="timeList.openDateToPicker(timeList.search.dateTo)" uib-datepicker-popup="{{ timeList.datePickerFormat }}" is-open="timeList.statusDateTo.opened" ng-model="timeList.search.dateTo" placeholder="Date To" />
                     </div>
                 </div>
 
@@ -29,29 +29,32 @@
             </div>
             <div class="row">
                 <div class="col-sm-9">
-                    <button class="btn btn-success btn-block">Search</button>
+                    <button class="btn btn-success btn-block btn-sm" ng-disabled="!timeList.search.dateFrom || !timeList.search.dateTo" ng-click="timeList.search()"><i class="fa fa-search"></i> Search</button>
                 </div>
                 <div class="col-sm-3">
-                    <button class="btn btn-info btn-block" ng-click="timeList.resetFilters()">Clear</button>
+                    <button class="btn btn-info btn-block btn-sm" ng-disabled="!timeList.search.dateFrom && !timeList.search.dateTo" ng-click="timeList.resetFilters()">Clear</button>
                 </div>
             </div>
         </div>
-        <p class="help-block"><span class="badge">{{ timeList.totalItems }}</span> records</p>
-        <br>
-        <button class="btn btn-primary" ui-sref="log_create">New</button>
-        <button class="btn btn-default" ng-click="vm.refresh()">Refresh</button>
+        <div>
+            <p class="help-block"><span class="badge">{{ timeList.totalItems }}</span> records</p>
+            <br>
+            <button class="btn btn-primary btn-sm" ui-sref="log_create"><i class="fa fa-plus"></i> New</button>
+            <button class="btn btn-success btn-sm" ng-click="timeList.refresh()"><i class="fa fa-refresh"></i></button>
+        </div>
         <br>
         <br>
 
         <!-- this could be moved to a directive --> <!-- dateFilter:timeList.dateFrom:timeList.dateTo  | filter: timeList.search-->
         <div class="panel panel-primary timeEntry"
-            ng-repeat="timeEntry in timeList.filtered = timeList.timeEntries | orderBy:'date':true | startFrom:(timeList.currentPage-1)*timeList.itemsPerPage | limitTo:timeList.itemsPerPage">
+            ng-repeat="timeEntry in timeList.filtered = timeList.timeEntries |  orderBy:'date':true | startFrom:(timeList.currentPage-1)*timeList.itemsPerPage | limitTo:timeList.itemsPerPage">
             <div class="panel-heading">
                <div class="row">
                     <div class="col-sm-8">
                         <h3 class="panel-title">
                             <i class="fa fa-calendar"></i>
-                            {{ timeEntry.date | dateToISO | date: timeList.dateTimeFormat }}
+                            <!--{{ timeEntry.date | dateToISO | date: timeList.dateTimeFormat }}-->
+                            {{ timeEntry.date | date: timeList.dateFormat }}
                         </h3>
                     </div>
                     <div class="col-sm-4">
@@ -98,7 +101,7 @@
         <br>
 
         <!--total-items="(timeList.timeEntries|filter:search).length"-->
-       <uib-pagination
+       <uib-pagination class="pagination-sm"
                total-items="timeList.totalItems"
                items-per-page="timeList.itemsPerPage"
                ng-model="timeList.currentPage">

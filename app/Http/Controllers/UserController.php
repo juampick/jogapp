@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Validator;
 
 class UserController extends Controller
 {
@@ -62,7 +66,37 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Auth::user()->hasRole('user')){
+            return response()->json(['error' => 'You are not allowed to see this']);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+            'confirmPassword' => 'required|same:password',
+            'role' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'invalid_data'], 422);
+        }
+
+        $userData = $request->only('name', 'email', 'password');
+        $roleName = $request->input('role');
+
+        $userData['password'] =  Hash::make($userData['password']); //We do the hash of the password
+        try {
+            $user = User::create($userData);
+            //Asign a role to that user
+            $role = Role::where('name', '=', $roleName)->first();
+
+            $user->attachRole($role);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => 'User already exists.'], \Illuminate\Http\Response::HTTP_CONFLICT);
+        }
+
     }
 
     /**

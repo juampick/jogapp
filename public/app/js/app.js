@@ -110,8 +110,17 @@
                     onlyAdmin: true
                 }
             })
+            .state('admin_create', {
+                url: '/admin/create',
+                templateUrl: 'app/pages/admin_new.html',
+                controller: 'AdminCreateController as adminCreate',
+                data: {
+                    requireLogin: true,
+                    onlyAdmin: true
+                }
+            })
             .state('log_list', {
-                url: '/log_list',
+                url: '/log/list',
                 templateUrl: 'app/pages/log_list.html',
                 controller: 'TimeEntryListController as timeList',
                 data: {
@@ -119,7 +128,7 @@
                 }
             })
             .state('log_create', {
-                url: '/log_create',
+                url: '/log/create',
                 templateUrl: 'app/pages/log_create.html',
                 controller: 'TimeEntryCreateController as timeCreate',
                 data: {
@@ -128,7 +137,7 @@
             })
             .state('log_edit', {
                 params: {data: {}},
-                url: '/log_edit/:id',
+                url: '/log/edit/:id',
                 templateUrl: 'app/pages/log_edit.html',
                 controller: 'TimeEntryEditController as timeEdit',
                 data: {
@@ -136,7 +145,7 @@
                 }
             })
             .state('log_report', {
-                url: '/log_report',
+                url: '/log/report',
                 templateUrl: 'app/pages/log_report.html',
                 controller: 'TimeEntryReportController as timeReport',
                 data: {

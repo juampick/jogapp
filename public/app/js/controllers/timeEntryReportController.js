@@ -13,6 +13,9 @@
         vm.reportList = [];
         vm.dataForChartSpeed = [];
         vm.dataForChartDistance = [];
+        // Pagination //
+        vm.currentPage = 1;
+        vm.itemsPerPage = 5;
 
         vm.labels = [];
         vm.optionsDistance = {
@@ -47,22 +50,27 @@
         vm.getReports = function () {
             reportService.get(authentication.currentUser().id)
                 .then(function (response) {
-                    vm.reportList = response.data;
-                    angular.forEach(vm.reportList.results, function(value, key){
+                    angular.forEach(response.data.results, function(value, key){
                         var year = $filter('limitTo')(key, 4, 0);
                         var week = $filter('limitTo')(key, 2, 4)
                         var label = year + '-' + week;
                         vm.labels.push(label);
                         vm.dataForChartSpeed.push($filter('number')(value.avgSpeedSums, 2));
                         vm.dataForChartDistance.push($filter('number')(value.avgDistance, 2));
+
+                        vm.reportList.push({
+                            weekYear: key,
+                            avgDistance: value.avgDistance,
+                            avgSpeedSums: value.avgSpeedSums,
+                        });
                     });
+                    vm.totalItems = vm.reportList.length;
                 })
                 .catch(function (data) {
 
                 })
         };
         vm.getReports();
-
 
     }
 

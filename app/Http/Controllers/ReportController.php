@@ -49,7 +49,7 @@ class ReportController extends Controller
 
             $avgSpeed = $timeEntry->distance / $timeInHours;
 
-            $carbonDate = Carbon::createFromFormat('Y-m-d H:i:s', $timeEntry->date);
+            $carbonDate = Carbon::createFromFormat('Y-m-d', $timeEntry->date);
             $weekOfYear = $carbonDate->weekOfYear;
             if (strlen($weekOfYear) == 1){
                $weekOfYear = '0'.$weekOfYear;
