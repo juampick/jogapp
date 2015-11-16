@@ -1,1 +1,24 @@
 <h3>Admin page</h3>
+
+<table class="table table-striped">
+    <thead>
+        <th>User</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Date Created</th>
+    </thead>
+    <tbody>
+        <tr ng-repeat="user in admin.usersList">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.created_at }}</td>
+            <td>
+                <a href="#" uib-tooltip="Delete"
+                   ng-really-message="Are you sure you want to delete this User?" ng-really-click="admin.deleteUser(user)">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

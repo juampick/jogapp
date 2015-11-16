@@ -5,13 +5,17 @@
         .module('jogApp')
         .controller('TimeEntryListController', TimeEntryListController);
 
-    TimeEntryListController.$inject = ['$scope', '$state', 'filterFilter', 'timeEntry', 'toastr'];
+    TimeEntryListController.$inject = ['$scope', '$state', 'filterFilter', 'timeEntry', 'toastr', 'authentication', 'user'];
 
-    function TimeEntryListController($scope, $state, filterFilter, timeEntryService, toastr) {
+    function TimeEntryListController($scope, $state, filterFilter, timeEntryService, toastr, authentication, userService) {
         var vm = this;
 
         vm.timeEntries = [];
         vm.search = {}; //Search object
+
+        //Auth
+        vm.authenticated = authentication.authenticated();
+        vm.currentUser = authentication.currentUser();
 
         // DatePicker //
         vm.datePickerFormat = 'MM-dd-yyyy';
@@ -53,9 +57,9 @@
 
         };
 
-        function getTimeEntries() {
+        function getTimeEntries(selectedUserId) {
             toastr.info('Loading records...');
-            timeEntryService.get()
+            timeEntryService.get(selectedUserId)
                 .then(function (response) {
                     vm.timeEntries = [];
                     angular.forEach(response, function (item) {
@@ -99,5 +103,46 @@
         };
 
         getTimeEntries();
+
+        $scope.$watch( authentication.authenticated, function ( authenticated ) {
+            vm.authenticated = authenticated;
+            vm.currentUser = authentication.currentUser();
+        });
+
+        vm.usersList = [];
+        vm.userSelected = {};
+
+        function getUsers() {
+            userService.get()
+                .then(function (response) {
+                    /*vm.users = [];
+                    angular.forEach(response, function (item) {
+                        var timeInHours = moment.duration(item.time, "HH:mm:ss: A").asHours();
+                        item.averageSpeed = (item.distance / timeInHours);
+                        vm.timeEntries.push(item);
+                    });*/
+                    vm.usersList = response;
+                })
+                .catch(function () {
+
+                })
+                .finally(function () {
+                    /*toastr.clear();
+                    vm.totalItems = vm.timeEntries.length;
+                    console.log('@getTimeEntries totalItems: ' + vm.totalItems);*/
+                });
+        }
+        getUsers();
+
+        vm.changeUserSelect = function(){
+           console.debug(vm.userSelected);
+            if (vm.userSelected !== null){
+                getTimeEntries(vm.userSelected.id);
+            } else {
+                vm.timeEntries = [];
+                vm.totalItems = 0;
+            }
+        };
+
     }
 })();

@@ -23,20 +23,13 @@
                 .then(function () {
                     authentication.getUser()
                         .then(function (response) {
-                            // Stringify the returned data to prepare it
-                            // to go into local storage
+                            // Stringify the returned data to prepare it to go into local storage
                             var user = JSON.stringify(response.data.user);
 
-                            // Set the stringified user data into local storage
                             localStorage.setItem('user', user);
 
-                            // The user's authenticated state gets flipped to
-                            // true so we can now show parts of the UI that rely
-                            // on the user being logged in
                             authentication.authenticated = true;
 
-                            // Putting the user's data on $rootScope allows
-                            // us to access it anywhere across the app
                             authentication.currentUser = response.data.user;
                         });
                 });

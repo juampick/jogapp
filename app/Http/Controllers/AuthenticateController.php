@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class AuthenticateController extends Controller
         try {
             $customClaims = [];
             if (isset($user)){
-                $customClaims = ['role' => $user->role];
+                $customClaims = ['role' => $user->roles->first()->name];
             }
             // verify the credentials and create a token for the user
             if (! $token = JWTAuth::attempt($credentials, $customClaims)) {
@@ -65,7 +66,8 @@ class AuthenticateController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'confirmPassword' => 'required|same:password'
+            'confirmPassword' => 'required|same:password',
+            'role' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -73,16 +75,22 @@ class AuthenticateController extends Controller
         }
 
         $userData = $request->only('name', 'email', 'password');
+        $roleName = $request->input('role');
 
         $userData['password'] =  Hash::make($userData['password']); //We do the hash of the password
         try {
             $user = User::create($userData);
+            //Asign a role to that user
+            $role = Role::where('name', '=', $roleName)->first();
+
+            $user->attachRole($role);
+
         } catch (Exception $e) {
             return response()->json(['error' => 'User already exists.'], \Illuminate\Http\Response::HTTP_CONFLICT);
         }
 
         //Role check
-        $customClaims = ['role' => $user->role];
+        $customClaims = ['role' => $user->roles->first()->name];
         $token = JWTAuth::fromUser($user, $customClaims);
 
         return response()->json(compact('token'));
@@ -109,6 +117,10 @@ class AuthenticateController extends Controller
             return response()->json(['token_absent'], $e->getStatusCode());
 
         }
+
+        //Get Role
+        $user->role = $user->roles->first()->name;
+        unset($user->roles);
 
         // the token is valid and we have found the user via the sub claim
         return response()->json(compact('user'));

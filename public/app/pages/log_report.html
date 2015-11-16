@@ -5,23 +5,23 @@
 </div>
 <div class="row">
     <div class="col-sm-6">
-        <div class="panel panel-default" id="speed-chart">
-            <div class="panel-heading">Avg. Speed (Km/h)</div>
+        <div class="panel panel-default" id="distance-chart">
+            <div class="panel-heading">Avg. Distance (Km)</div>
             <div class="panel-body">
-                <canvas id="speed-chart-canvas" class="chart chart-line" chart-data="timeReport.dataAvgSpeed"
-                        chart-labels="timeReport.labels" chart-legend="timeReport.true" chart-series="timeReport.seriesAvgSpeed"
-                        chart-click="timeReport.onClickSpeed">
+                <canvas id="distance-chart-canvas" class="chart chart-line" chart-data="timeReport.dataAvgDistance"
+                        chart-labels="timeReport.labels" chart-legend="false" chart-series="timeReport.seriesAvgDistance"
+                        chart-click="timeReport.onClickDistance" chart-options="timeReport.optionsDistance">
                 </canvas>
             </div>
         </div>
     </div>
     <div class="col-sm-6">
-        <div class="panel panel-default" id="distance-chart">
-            <div class="panel-heading">Avg. Distance (Km)</div>
+        <div class="panel panel-default" id="speed-chart">
+            <div class="panel-heading">Avg. Speed (Km/h)</div>
             <div class="panel-body">
-                <canvas id="distance-chart-canvas" class="chart chart-line" chart-data="timeReport.dataAvgDistance"
-                        chart-labels="timeReport.labels" chart-legend="timeReport.true" chart-series="timeReport.seriesAvgDistance"
-                        chart-click="timeReport.onClickDistance">
+                <canvas id="speed-chart-canvas" class="chart chart-line" chart-data="timeReport.dataAvgSpeed"
+                        chart-labels="timeReport.labels" chart-legend="false" chart-series="timeReport.seriesAvgSpeed"
+                        chart-click="timeReport.onClickSpeed" chart-options="timeReport.optionsSpeed" chart-colours="timeReport.colours">>
                 </canvas>
             </div>
         </div>
@@ -29,7 +29,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <table class="table">
+        <table class="table table-striped">
             <thead>
             <th>Year</th>
             <th>Week</th>

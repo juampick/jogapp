@@ -16,8 +16,8 @@
         });
 
         return {
-            get: function () {
-                return TimeEntry.query().$promise;
+            get: function (id) {
+                return TimeEntry.query({id:id}).$promise;
             },
 
             save: function (data) {

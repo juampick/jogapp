@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\TimeEntry;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -20,6 +22,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserTableSeeder::class);
         $this->call(TimeEntryTableSeeder::class);
+        $this->call(RoleTableSeeder::class);
 
         Model::reguard();
     }
@@ -32,8 +35,11 @@ class UserTableSeeder extends Seeder {
 
         $users = array(
             ['name' => 'Juan Cook', 'email' => 'juampick@gmail.com', 'password' => Hash::make('toptal')],
-            ['name' => 'SuperAdmin', 'email' => 'admin@toptal.com', 'password' => Hash::make('toptal')],
-            ['name' => 'Generic User', 'email' => 'generic@user.com', 'password' => Hash::make('toptal')],
+            ['name' => 'User Manager', 'email' => 'usermanager@toptal.com', 'password' => Hash::make('toptal')],
+            ['name' => 'Admin', 'email' => 'admin@toptal.com', 'password' => Hash::make('toptal')],
+            ['name' => 'Luis Filipe Teófilo', 'email' => 'luis.filipe@toptal.com', 'password' => Hash::make('toptal')],
+            ['name' => 'Luis Filipe Teófilo UM', 'email' => 'luis.filipe_um@toptal.com', 'password' => Hash::make('toptal')],
+            ['name' => 'Luis Filipe Teófilo Admin', 'email' => 'luis.filipe_admin@toptal.com', 'password' => Hash::make('toptal')],
         );
 
         // Loop through each user above and create the record for them in the database
@@ -72,5 +78,67 @@ class TimeEntryTableSeeder extends Seeder
         foreach ($timesEntries as $timeEntry) {
             TimeEntry::create($timeEntry);
         }
+    }
+}
+
+class RoleTableSeeder extends Seeder
+{
+    public function run()
+    {
+        /*
+        Types of Roles:
+            user            => common user: CRUD timeEntries (yours)
+            user_manager    => user that can CRUD users and CRUD timeEntries (from all user (common ones))
+            admin           => user that can CRUD users and CRUD timeEntries (from all users (all types)... user/user_manager and admin)
+        */
+
+        # Creating Roles #
+        $userRole = new Role();
+        $userRole->name = 'user';
+        $userRole->display_name = 'User';
+        $userRole->save();
+
+        $userManagerRole = new Role;
+        $userManagerRole->name = 'user_manager';
+        $userManagerRole->display_name = 'User Manager';
+        $userManagerRole->save();
+
+        $adminRole = new Role;
+        $adminRole->name = 'admin';
+        $adminRole->display_name = 'Admin';
+        $adminRole->save();
+
+        # Creating Permissions #
+        $createTimeEntriesPerm = new Permission();
+        $createTimeEntriesPerm->name = 'create_time_entries';
+        $createTimeEntriesPerm->display_name = 'Create Time Entries';
+        $createTimeEntriesPerm->save();
+
+        $deleteTimeEntriesPerm = new Permission();
+        $deleteTimeEntriesPerm->name = 'delete_time_entries';
+        $deleteTimeEntriesPerm->display_name = 'Delete Time Entries';
+        $deleteTimeEntriesPerm->save();
+
+        $editTimeEntriesPerm = new Permission();
+        $editTimeEntriesPerm->name = 'edit_time_entries';
+        $editTimeEntriesPerm->display_name = 'Edit Time Entries';
+        $editTimeEntriesPerm->save();
+
+        # Assign Roles to Users #
+        //Find Users
+        $userJuampick = User::where('email', '=', 'juampick@gmail.com')->first();
+        $userManager = User::where('email', '=', 'usermanager@toptal.com')->first();
+        $userAdmin = User::where('email', '=', 'admin@toptal.com')->first();
+        $userLuis = User::where('email', '=', 'luis.filipe@toptal.com')->first();
+        $userLuisManager = User::where('email', '=', 'luis.filipe_um@toptal.com')->first();
+        $userLuisAdmin = User::where('email', '=', 'luis.filipe_admin@toptal.com')->first();
+
+        //Asign Roles to Users
+        $userJuampick->attachRole($userRole);
+        $userManager->attachRole($userManagerRole);
+        $userAdmin->attachRole($userAdmin);
+        $userLuis->attachRole($userRole);
+        $userLuisManager->attachRole($userManagerRole);
+        $userLuisAdmin->attachRole($userAdmin);
     }
 }

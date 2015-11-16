@@ -15,7 +15,7 @@ class ReportController extends Controller
 {
     public function __construct()
     {
-//        $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth');
     }
 
     /**
@@ -33,7 +33,7 @@ class ReportController extends Controller
         $cTimeEntries = TimeEntry::where('user_id', $userId)->select('date', 'distance', 'time')->get();
 
         if ($cTimeEntries->isEmpty()) {
-            return response()->json('no records');
+            return response()->json(['no records']);
         }
 
         foreach ($cTimeEntries as $timeEntry) {
@@ -51,6 +51,9 @@ class ReportController extends Controller
 
             $carbonDate = Carbon::createFromFormat('Y-m-d H:i:s', $timeEntry->date);
             $weekOfYear = $carbonDate->weekOfYear;
+            if (strlen($weekOfYear) == 1){
+               $weekOfYear = '0'.$weekOfYear;
+            }
             $weekYear = $carbonDate->year . $weekOfYear;
 
             $timeEntry->avgSpeed = $avgSpeed;

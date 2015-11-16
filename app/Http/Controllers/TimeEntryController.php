@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TimeEntry;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -59,14 +60,15 @@ class TimeEntryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the timeEntries of specific User only
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        return User::find($id)->timeEntries;
+
     }
 
     /**

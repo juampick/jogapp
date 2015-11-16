@@ -3,6 +3,15 @@
 </div>
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
+        <div class="well well-sm" ng-if="timeList.currentUser.role === 'admin'">
+            <div class="form-group">
+                <label for="user">User</label>
+                <select id="user" name="user" class="form-control" ng-model="timeList.userSelected" ng-options="option.name for option in timeList.usersList track by option.id" ng-change="timeList.changeUserSelect(user)">
+                    <option value="">-- Select user --</option>
+                </select>
+                <p class="help-block"></p>
+            </div>
+        </div>
         <div class="well well-sm">
             <div class="row">
                 <div class="col-sm-6">
@@ -30,6 +39,7 @@
         <p class="help-block"><span class="badge">{{ timeList.totalItems }}</span> records</p>
         <br>
         <button class="btn btn-primary" ui-sref="log_create">New</button>
+        <button class="btn btn-default" ng-click="vm.refresh()">Refresh</button>
         <br>
         <br>
 

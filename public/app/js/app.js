@@ -104,7 +104,7 @@
             .state('admin', {
                 url: '/admin',
                 templateUrl: 'app/pages/admin.html',
-                controller: 'HomeController as home',
+                controller: 'AdminController as admin',
                 data: {
                     requireLogin: true,
                     onlyAdmin: true

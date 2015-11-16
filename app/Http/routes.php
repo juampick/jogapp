@@ -4,7 +4,8 @@
     Route::group(array('prefix' => 'api/v1'), function () {
 
         # TimeEntry #
-        Route::resource('time_entry', 'TimeEntryController', ['only' => ['index', 'store', 'update', 'destroy']]);
+        Route::resource('time_entry', 'TimeEntryController', ['only' => ['index', 'store', 'update', 'destroy', 'show']]);
+        Route::resource('user', 'UserController', ['only' => ['index', 'store', 'update', 'destroy']]);
 
         Route::get('report/{id}', 'ReportController@getReport');
 

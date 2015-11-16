@@ -38,6 +38,7 @@
         //SignUp function
         vm.signup = function (isValid) {
             if (isValid) {
+                vm.user.role = 'user'; //For now: we currently create all the users with the common role: user
                 authentication.signUp(vm.user)
                     .then(function(){
                         $state.go('/');
