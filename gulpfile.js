@@ -13,16 +13,16 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.less([
-        'public/app/less/myless.less',
-    ]);
+        '../../../public/app/less/myless.less'
+    ], 'public/app/less/mycss.css');
 
-    //mix.styles([
-    //    'public/app/css/mycss.css',
-    //], 'public/app/css/main.css');
+    mix.styles([
+        '../../../public/app/css/mycss.css'
+    ], 'public/app/css/main.css');
 
     mix.scripts([
-        'public/app/js/app.js',
-        'public/app/js/services/timeEntry.js'
+        '../../../public/app/js/app.js',
+        '../../../public/app/js/services/timeEntry.js'
     ], 'public/app/js/main.js')
 
 });
