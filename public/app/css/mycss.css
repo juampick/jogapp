@@ -1,6 +1,18 @@
 /* Angular-UI-Bootstrap FIX */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+.page-header {
+    margin-top: 0;
+}
+
+.page-header h3 {
+    margin-top: 0;
+}
+
+.timeEntry {
+    position: relative;
+}
+
 .timeEntry .time-actions {
     opacity: 0.1;
     -webkit-transition: opacity ease .2s;
@@ -24,4 +36,26 @@
 
 .timeEntry .time-actions a {
     color: #333;
+}
+
+.timeEntry .average-speed-container {
+    margin-bottom: 0;
+    font-weight: 100;
+
+}
+
+.timeEntry .average-speed-container .average-speed {
+    font-size: 32px;
+}
+
+.timeEntry .distance {
+    margin-right: 10px;
+}
+
+.panel-info {
+    margin-bottom: 5px;
+}
+
+.chart-tab {
+    margin-top: 20px;
 }

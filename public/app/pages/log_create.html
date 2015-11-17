@@ -5,9 +5,10 @@
         <div class="well well-sm" ng-if="timeCreate.currentUser.role === 'admin' || timeCreate.currentUser.role === 'user_manager'">
             <div class="form-group">
                 <label for="user">User</label>
-                <select id="user" name="user" class="form-control" ng-model="timeCreate.userSelected" ng-options="option.name for option in timeCreate.usersList track by option.id" ng-change="timeCreate.changeUserSelect(user)">
-                    <option value="">-- Select user --</option>
-                </select>
+                <!--<select id="user" name="user" class="form-control" ng-model="timeCreate.userSelected" ng-options="option.name for option in timeCreate.usersList track by option.id" ng-change="timeCreate.changeUserSelect(user)">
+                    <option value="">&#45;&#45; Select user &#45;&#45;</option>
+                </select>-->
+                <input type="text" id="ser" name="user" class="form-control" ng-model="timeCreate.userSelected" />
                 <p class="help-block"></p>
             </div>
         </div>
@@ -44,10 +45,10 @@
             </div>
             <div class="row">
                 <div class="col-sm-8">
-                    <button class="btn btn-primary btn-block" ng-click="timeCreate.create(newLog.$valid)" ng-disabled="newLog.$invalid">Create</button>
+                    <button class="btn btn-primary btn-block" ng-click="timeCreate.create(newLog.$valid)" ng-disabled="newLog.$invalid"><i class="fa fa-plus"></i> Create</button>
                 </div>
                 <div class="col-sm-4">
-                    <button class="btn btn-secondary btn-block" ui-sref="log_list">Back</button>
+                    <button class="btn btn-secondary btn-block" ui-sref="log_list"><i class="fa fa-backward"></i> Back</button>
                 </div>
             </div>
             <br>

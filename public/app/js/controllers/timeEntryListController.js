@@ -44,7 +44,7 @@
 
         // Pagination //
         vm.currentPage = 1;
-        vm.itemsPerPage = 5;
+        vm.itemsPerPage = 6;
 
         vm.resetFilters = function () {
             vm.search.dateFrom = '';

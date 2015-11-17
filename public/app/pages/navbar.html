@@ -1,12 +1,18 @@
 <nav class="navbar navbar-default" ng-controller="NavbarController as nav">
     <div class="container">
         <div class="navbar-header">
+            <button ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" class="navbar-toggle collapsed" aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand" ui-sref="/">
                 <i class="app-icon fa fa-tachometer"></i> JogApp
                 <!--<img alt="JogApp" src="../app/icons/ic_directions_run_black_24dp_1x.png">-->
             </a>
         </div>
 
+        <div class="collapse navbar-collapse" uib-collapse="navCollapsed">
         <ul class="nav navbar-nav">
             <li>
                 <a ui-sref="/"><i class="fa fa-home"></i> Home</a>
@@ -48,6 +54,7 @@
                     <a ui-sref="signup"><i class="fa fa-plus-circle"></i> Sign Up</a>
                 </li>
             </ul>
+            </div>
         </div>
     </div>
 </nav>
