@@ -5,17 +5,10 @@
         .module('jogApp')
         .controller('TimeEntryListController', TimeEntryListController);
 
-    TimeEntryListController.$inject = ['$scope', '$state', '$filter', 'filterFilter', 'timeEntry', 'toastr', 'authentication', 'user'];
+    TimeEntryListController.$inject = ['$scope', '$state', '$filter', '$stateParams', 'filterFilter', 'timeEntry', 'toastr', 'authentication', 'user'];
 
-    function TimeEntryListController($scope, $state, $filter, filterFilter, timeEntryService, toastr, authentication, userService) {
+    function TimeEntryListController($scope, $state, $filter, $stateParams, filterFilter, timeEntryService, toastr, authentication, userService) {
         var vm = this;
-
-        vm.timeEntries = [];
-        vm.timeEntriesOriginal = [];
-        vm.search= {
-            dateFrom: '',
-            dateTo: ''
-        }; //Search object
 
         //Auth
         vm.authenticated = authentication.authenticated();
@@ -24,6 +17,24 @@
             vm.authenticated = authenticated;
             vm.currentUser = authentication.currentUser();
         });
+
+        vm.timeEntries = [];
+        vm.timeEntriesOriginal = [];
+        vm.usersList = [];
+        vm.userSelected = {};
+        vm.userSelectedParam = null;
+
+        if ($stateParams.userSelected !== null) {
+            vm.userSelected = $stateParams.userSelected;
+            vm.userSelectedParam = vm.userSelected;
+        } else {
+            vm.userSelected = vm.currentUser;
+        }
+
+        vm.search= {
+            dateFrom: '',
+            dateTo: ''
+        }; //Search object
 
         // DatePicker //
         vm.datePickerFormat = 'MM-dd-yyyy';
@@ -53,7 +64,6 @@
         };
 
         vm.updateSearch = function () {
-            console.log('updateSearch');
             //vm.filtered = filterFilter(vm.timeEntries, {distance: vm.search.distance}); //ToDo: take off this if not distance searched
             //vm.totalItems = vm.filtered.length;
 
@@ -61,7 +71,6 @@
             vm.totalItems = vm.timeEntries.length;
 
             console.log('@updateSearch - totalItems: ' + vm.totalItems);
-
         };
 
         vm.search = function(){
@@ -70,8 +79,6 @@
 
             if (vm.search.dateFrom !== '' && vm.search.dateTo !== '') {
                 vm.newTimesEntriesList = $filter('dateFilter')(vm.timeEntriesOriginal, vm.search.dateFrom, vm.search.dateTo);
-                console.debug(vm.newTimesEntriesList);
-
                 vm.timeEntries = [];
                 vm.timeEntries = vm.newTimesEntriesList;
                 vm.totalItems = vm.timeEntries.length;
@@ -79,6 +86,11 @@
         };
 
         function getTimeEntries(selectedUserId) {
+            if (selectedUserId === undefined) {
+                if (vm.userSelectedParam !== null){
+                    selectedUserId = vm.userSelectedParam.id;
+                }
+            }
             toastr.info('Loading records...');
             timeEntryService.get(selectedUserId)
                 .then(function (response) {
@@ -120,14 +132,12 @@
             $state.go('log_edit',
                 {
                     id: timeEntry.id,
-                    data: timeEntry
+                    data: timeEntry,
+                    userSelected: vm.userSelected
                 });
         };
 
         getTimeEntries();
-
-        vm.usersList = [];
-        vm.userSelected = {};
 
         function getUsers() {
             userService.get()
@@ -147,12 +157,11 @@
         }
 
         vm.changeUserSelect = function () {
-            console.debug(vm.userSelected);
             if (vm.userSelected !== null) {
                 getTimeEntries(vm.userSelected.id);
             } else {
-                vm.timeEntries = [];
-                vm.totalItems = 0;
+                vm.userSelected = vm.currentUser;
+                getTimeEntries();
             }
         };
 

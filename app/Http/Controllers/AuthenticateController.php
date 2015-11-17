@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
@@ -124,6 +125,15 @@ class AuthenticateController extends Controller
 
         // the token is valid and we have found the user via the sub claim
         return response()->json(compact('user'));
+    }
+
+    public function changePwd(Request $request){
+        echo 'hello'; die;
+        $user = Auth::user();
+        if ($user) {
+            $user->password = Hash::make($request->input('newPassword'));
+            return $user->save();
+        }
     }
 
 }

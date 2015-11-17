@@ -37,7 +37,7 @@
                     <button class="btn btn-primary btn-block" ng-click="timeEdit.update(editLog.$valid)" ng-disabled="editLog.$invalid">Edit</button>
                 </div>
                 <div class="col-sm-4">
-                    <button class="btn btn-secondary btn-block" ui-sref="log_list">Back</button>
+                    <button class="btn btn-secondary btn-block" ui-sref="log_list({ userSelected: timeEdit.userSelected })">Back</button>
                 </div>
             </div>
             <br>

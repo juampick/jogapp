@@ -43,11 +43,11 @@ class UserController extends Controller
                 }
             }
         } else if (Auth::user()->hasRole('user_manager')){
-            $allUsers =  User::all(); //I need toget all the users but only the ones that are 'users';
+            $allUsers =  User::all(); //I need to get all the users but only the ones that are 'users';
             foreach ($allUsers as $user){
                 if (Auth::user()->id != $user->id) { //Remove the currentUser
                     if ($user->hasRole('user')) {
-                        $user->role = $user->roles->first()->name;
+                        $user->role = $user->roles->first()->display_name;
                         unset($user->roles);
                         $users[] = $user;
                     }
@@ -67,7 +67,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         if (Auth::user()->hasRole('user')){
-            return response()->json(['error' => 'You are not allowed to see this']);
+            return response()->json(['error' => 'You are not allowed to do this action']);
         }
 
         $validator = Validator::make($request->all(), [
@@ -85,10 +85,15 @@ class UserController extends Controller
         $userData = $request->only('name', 'email', 'password');
         $roleName = $request->input('role');
 
+        if (Auth::user()->hasRole('user_manager') &&
+            ($roleName == 'user_manager' || $roleName == 'admin')){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+        }
+
         $userData['password'] =  Hash::make($userData['password']); //We do the hash of the password
         try {
             $user = User::create($userData);
-            //Asign a role to that user
+            //Assign a role to that user
             $role = Role::where('name', '=', $roleName)->first();
 
             $user->attachRole($role);
@@ -97,29 +102,6 @@ class UserController extends Controller
             return response()->json(['error' => 'User already exists.'], \Illuminate\Http\Response::HTTP_CONFLICT);
         }
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -132,6 +114,14 @@ class UserController extends Controller
     {
         if (!Auth::user()->hasRole('admin')){
             return response()->json(['error' => 'You are not allowed to do this action']);
+        }
+
+        $userToDelete = User::where('id', $id)->get()->first();
+
+        if ($userToDelete){
+            if (Auth::user()->hasRole('user_manager') && ($userToDelete->hasRole('user_manager') || $userToDelete->hasRole('admin'))){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            }
         }
 
         return User::destroy($id);

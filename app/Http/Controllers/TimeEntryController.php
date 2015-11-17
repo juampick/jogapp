@@ -54,6 +54,17 @@ class TimeEntryController extends Controller
             return response()->json(['error' => 'invalid_data'], 422);
         }
 
+        $userId = $request->input('user_id');
+        $user = User::find($userId);
+
+        if (Auth::user()->id != $userId){
+            if (Auth::user()->hasRole('user')){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            } else if (Auth::user()->hasRole('user_manager') && (($user->hasRole('user_manager') || ($user->hasRole('admin'))))){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            }
+        }
+
         $timeEntry = TimeEntry::create($request->all());
 
         return $timeEntry;
@@ -67,6 +78,16 @@ class TimeEntryController extends Controller
      */
     public function show($id)
     {
+        $user = User::find($id);
+
+        if (Auth::user()->id != $id){
+            if (Auth::user()->hasRole('user')){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            } else if (Auth::user()->hasRole('user_manager') && (($user->hasRole('user_manager') || ($user->hasRole('admin'))))){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            }
+        }
+
         return User::find($id)->timeEntries;
 
     }
@@ -92,6 +113,14 @@ class TimeEntryController extends Controller
 
         $timeEntry = TimeEntry::find($id);
 
+        if (Auth::user()->id != $timeEntry->user_id){
+            if (Auth::user()->hasRole('user')){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            } else if (Auth::user()->hasRole('user_manager') && (($timeEntry->user->hasRole('user_manager') || ($timeEntry->user->hasRole('admin'))))){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            }
+        }
+
         if (isset($timeEntry)){
             $timeEntry->date = $request->input('date');
             $timeEntry->distance = $request->input('distance');
@@ -109,6 +138,16 @@ class TimeEntryController extends Controller
      */
     public function destroy($id)
     {
+        $timeEntry = TimeEntry::find($id);
+
+        if (Auth::user()->id != $timeEntry->user_id){
+            if (Auth::user()->hasRole('user')){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            } else if (Auth::user()->hasRole('user_manager') && (($timeEntry->user->hasRole('user_manager') || ($timeEntry->user->hasRole('admin'))))){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            }
+        }
+
         return TimeEntry::destroy($id);
     }
 }

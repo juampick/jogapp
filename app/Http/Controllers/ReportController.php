@@ -26,14 +26,20 @@ class ReportController extends Controller
     public function getReport($userId)
     {
         $user = Auth::user();
-        if (isset($user) && ($user->id != $userId)) {
-            return response()->json(['error' => 'You are not allowed to see this']);
+
+        $userParam = User::find($userId);
+        if ($user->id != $userId){
+            if ($user->hasRole('user')){
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            } else if ($user->hasRole('user_manager') && ( $userParam->hasRole('user_manager') || ($userParam->hasRole('admin')))) {
+                return response()->json(['error' => 'You are not allowed to do this action']);
+            }
         }
 
         $cTimeEntries = TimeEntry::where('user_id', $userId)->select('date', 'distance', 'time')->get();
 
         if ($cTimeEntries->isEmpty()) {
-            return response()->json(['no records']);
+            return response()->json(['error' => 'no records']);
         }
 
         foreach ($cTimeEntries as $timeEntry) {
@@ -68,7 +74,6 @@ class ReportController extends Controller
             $aResultsByWeek[$timeEntryWeekKey]['avgDistance'] = $timeEntryWeekValue->avg('distance');
         }
 
-//        return response()->json(['items' => $aTimeEntriesGroupedByWeek, 'results' => $aResultsByWeek]);
         return response()->json(['results' => $aResultsByWeek]);
     }
 }

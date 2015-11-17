@@ -4,9 +4,10 @@
     <div class="col-sm-12">
         <button class="btn btn-primary btn-xs" ui-sref="admin_create" ><i class="fa fa-plus"></i> New User</button>
         <button class="btn btn-success btn-xs" ng-click="admin.refresh()"><i class="fa fa-refresh"></i></button>
-        <span class="badge">{{ admin.totalItems }}</span> records
     </div>
 </div>
+<br>
+<p class="text-muted">{{ admin.totalItems }} records</p>
 <table class="table table-striped">
     <thead>
         <th>User</th>

@@ -110,7 +110,7 @@
                 } else { //If some user logged:
                     /* Only Admin Users */
                     var onlyAdmin = toState.data.onlyAdmin;
-                    if (onlyAdmin && authentication.currentUser.role && authentication.currentUser.role !== 'admin') { //If the user has a different role than admin redirect to '/'
+                    if (onlyAdmin && authentication.currentUser.role && authentication.currentUser.role === 'user') { //If the user has a different role than admin redirect to '/'
                         event.preventDefault();
                         // go to the "main" state which in our case is '/'
                         $state.go('access-denied');

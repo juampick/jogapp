@@ -12,6 +12,13 @@
 
         vm.originalTimeEntry = {};
         vm.timeEntry = {};
+        vm.userSelected = {};
+
+        if ($stateParams.userSelected !== null) {
+            vm.userSelected = $stateParams.userSelected;
+        }
+
+        console.debug(vm.userSelected);
 
         if ($stateParams.data !== undefined){
             var editTimeEntry = $stateParams.data;
@@ -19,14 +26,15 @@
             vm.originalTimeEntry = {
                 id: editTimeEntry.id,
                 date: $filter('date')(editTimeEntry.date, "MM-dd-yyyy"),
-                distance: editTimeEntry.distance,
+                distance: Number(editTimeEntry.distance),
                 time: editTimeEntry.time
             };
 
+            console.debug(vm.originalTimeEntry);
             vm.timeEntry = {
                 id: editTimeEntry.id,
                 date: $filter('date')(editTimeEntry.date, "MM-dd-yyyy"),
-                distance: editTimeEntry.distance,
+                distance: Number(editTimeEntry.distance),
                 time: editTimeEntry.time
             };
 
@@ -59,7 +67,7 @@
                         .then(function(){
                             toastr.success('Log updated successfully');
                             toastr.clear();
-                            $state.go('log_list');
+                            $state.go('log_list', { userSelected: vm.userSelected});
                         })
                         .catch(function(data){
 

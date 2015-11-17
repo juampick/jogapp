@@ -5,8 +5,11 @@
 
         # TimeEntry #
         Route::resource('time_entry', 'TimeEntryController', ['only' => ['index', 'store', 'update', 'destroy', 'show']]);
+
+        # User #
         Route::resource('user', 'UserController', ['only' => ['index', 'store', 'update', 'destroy']]);
 
+        # Reports #
         Route::get('report/{id}', 'ReportController@getReport');
 
         # JWT Authentication #
@@ -14,6 +17,7 @@
         Route::post('authenticate', 'AuthenticateController@authenticate');
         Route::get('authenticate/user', 'AuthenticateController@getAuthenticatedUser');
         Route::post('authenticate/signup', 'AuthenticateController@signUp');
+        Route::post('authenticate/changepwd', 'AuthenticateController@changePwd');
     });
 
 // ============ Angular Routing ============

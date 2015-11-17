@@ -6,15 +6,13 @@
         .constant('urls', {
             BASE_API: '/api/v1'
         })
+        .constant('roles', [
+            { key: 'user', value : 'User' },
+            { key: 'user_manager', value: 'User Manager' },
+            { key: 'admin', value: 'Admin' }
+        ])
         .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', '$httpProvider', '$provide', 'urls', config])
         .run(['$rootScope', 'authentication', 'toastr', run]);
-
-    //.constant('USER_ROLES', {
-    //    all: '*',
-    //    admin: 'admin',
-    //    user: 'user',
-    //    guest: 'guest'
-    //})
 
     function config($stateProvider, $urlRouterProvider, $locationProvider, $authProvider, $httpProvider, $provide, urls) {
 
@@ -85,14 +83,6 @@
                     requireLogin: false
                 }
             })
-            .state('dashboard', {
-                url: '/dashboard',
-                templateUrl: 'app/pages/dashboard.html',
-                controller: 'HomeController as home',
-                data: {
-                    requireLogin: true
-                }
-            })
             .state('access-denied', {
                 url: '/access_denied',
                 templateUrl: 'app/pages/access_denied.html',
@@ -121,6 +111,7 @@
             })
             .state('log_list', {
                 url: '/log/list',
+                params: {userSelected: null},
                 templateUrl: 'app/pages/log_list.html',
                 controller: 'TimeEntryListController as timeList',
                 data: {
@@ -129,6 +120,7 @@
             })
             .state('log_create', {
                 url: '/log/create',
+                params: {userSelected: null},
                 templateUrl: 'app/pages/log_create.html',
                 controller: 'TimeEntryCreateController as timeCreate',
                 data: {
@@ -136,7 +128,7 @@
                 }
             })
             .state('log_edit', {
-                params: {data: {}},
+                params: {data: {}, userSelected: null},
                 url: '/log/edit/:id',
                 templateUrl: 'app/pages/log_edit.html',
                 controller: 'TimeEntryEditController as timeEdit',

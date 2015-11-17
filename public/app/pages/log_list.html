@@ -3,18 +3,27 @@
 </div>
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
+        <div class="well well-sm" ng-if="timeList.currentUser.role === 'admin' || timeList.currentUser.role === 'user_manager'">
+            <p>User Selected: <span class="text-muted">{{ timeList.userSelected.name }}</span></p>
+            <div class="form-group">
+                <select id="user" name="user" class="form-control" ng-model="timeList.userSelected" ng-options="option.name for option in timeList.usersList track by option.id" ng-change="timeList.changeUserSelect(user)">
+                    <option value="">-- Select user --</option>
+                </select>
+                <p class="help-block"></p>
+            </div>
+        </div>
         <div class="panel panel-info">
             <!-- Default panel contents -->
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-sm-9">
-                        <button class="btn btn-primary" ui-sref="log_create"><i class="fa fa-plus"></i> New</button>
+                        <button class="btn btn-primary" ui-sref="log_create({ userSelected: timeList.userSelected })"><i class="fa fa-plus"></i> New</button>
                         <button class="btn btn-default" ng-click="timeList.refresh()"><i class="fa fa-refresh"></i></button>
                     </div>
                 </div>
             </div>
             <div class="panel-body">
-                <h5>Filter by Dates</h5>
+                <h6>Filter by Dates</h6>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -36,23 +45,13 @@
 
             </div>
         </div>
-        <!--<input type="text" ng-model="timeList.search.distance" ng-change="timeList.updateSearch()" />-->
-        <div class="row">
+
+        <div class="row" ng-show="timeList.timeEntries.length > 0">
             <div class="col-sm-12">
                 <p class="text-muted pull-right"><span>{{ timeList.totalItems }}</span> records</p>
             </div>
         </div>
-        <div class="well well-sm" ng-if="timeList.currentUser.role === 'admin' || timeList.currentUser.role === 'user_manager'">
-            <div class="form-group">
-                <label for="user">User</label>
-                <select id="user" name="user" class="form-control" ng-model="timeList.userSelected" ng-options="option.name for option in timeList.usersList track by option.id" ng-change="timeList.changeUserSelect(user)">
-                    <option value="">-- Select user --</option>
-                </select>
-                <p class="help-block"></p>
-            </div>
-        </div>
 
-        <!-- this could be moved to a directive --> <!-- dateFilter:timeList.dateFrom:timeList.dateTo  | filter: timeList.search-->
         <div class="row">
             <div class="col-sm-6" ng-repeat="timeEntry in timeList.filtered = timeList.timeEntries |  orderBy:'date':true | startFrom:(timeList.currentPage-1)*timeList.itemsPerPage | limitTo:timeList.itemsPerPage">
                 <div class="panel panel-default timeEntry">
@@ -88,36 +87,14 @@
                             <span class="average-speed">{{ timeEntry.averageSpeed | number: 2 }}</span>
                             <span class="">Km/h.</span>
                         </p>
-
-                        <!--<div class="row">
-                            <div class="col-sm-8">
-                                <p><span class="text-muted"><i uib-tooltip="Distance" class="fa fa-road"></i></span> {{ timeEntry.distance | number }} km</p>
-                                <p><span class="text-muted"><i uib-tooltip="Time" class="fa fa-clock-o"></i></span> {{ timeEntry.time }} </p>
-                            </div>
-                            <div class="col-sm-4">
-
-
-                                <p>
-                                    <span class="text-muted">Avg. Speed (km/h): </span>
-                            <span>
-                                <i uib-tooltip="Avg. Speed" class="fa fa-tachometer"></i>
-                                <span class="label label-default">{{ timeEntry.averageSpeed | number: 2 }}</span>
-                            </span>
-
-                                </p>
-
-                            </div>
-                        </div>-->
-
                     </div>
                 </div>
             </div>
         </div>
-
+        <uib-alert class="no-records-alert" type="info" ng-show="timeList.timeEntries.length === 0">No records to display</uib-alert>
         <br>
 
-        <!--total-items="(timeList.timeEntries|filter:search).length"-->
-       <uib-pagination class="pagination-sm"
+        <uib-pagination class="pagination-sm" ng-show="timeList.totalItems > 0"
                total-items="timeList.totalItems"
                items-per-page="timeList.itemsPerPage"
                ng-model="timeList.currentPage">

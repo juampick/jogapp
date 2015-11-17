@@ -4,7 +4,21 @@
     </h3>
 </div>
 
-<uib-tabset>
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="well well-sm" ng-if="timeReport.currentUser.role === 'admin' || timeReport.currentUser.role === 'user_manager'">
+            <p>User Selected: <span class="text-muted">{{ timeReport.userSelected.name }}</span></p>
+            <div class="form-group">
+                <select id="user" name="user" class="form-control" ng-model="timeReport.userSelected" ng-options="option.name for option in timeReport.usersList track by option.id" ng-change="timeReport.changeUserSelect(user)">
+                    <option value="">-- Select user --</option>
+                </select>
+                <p class="help-block"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<uib-tabset ng-show="timeReport.reportList.length > 0">
     <uib-tab>
         <uib-tab-heading>
             <i class="fa fa-line-chart"></i> Charts
@@ -46,23 +60,18 @@
                 <div class="col-sm-12">
                     <table class="table table-striped">
                         <thead>
-                        <th>Year</th>
-                        <th>Week</th>
-                        <th>Avg. Distance</th>
-                        <th>Avg. Speed</th>
+                            <th>Year</th>
+                            <th>Week</th>
+                            <th>Avg. Distance</th>
+                            <th>Avg. Speed</th>
                         </thead>
-                        <!--<tbody> | startFrom:(timeReport.currentPage-1)*timeReport.itemsPerPage | limitTo:timeReport.itemsPerPage-->
-                        <!--<tr ng-repeat="(reportWeekKey, reportWeekData) in timeReport.reportList | startFromObject:(timeReport.currentPage-1)*timeReport.itemsPerPage | limitTo:timeReport.itemsPerPage">-->
-                        <tr ng-repeat="report in timeReport.reportList | startFrom:(timeReport.currentPage-1)*timeReport.itemsPerPage | limitTo:timeReport.itemsPerPage">
-                            <td>{{ report.weekYear | limitTo:4:0 }}</td>
-                            <td>{{ report.weekYear | limitTo:2:4 }}</td>
-                            <td>{{ report.avgDistance | number : 2 }} km</td>
-                            <td>{{ report.avgSpeedSums | number: 2}} km/h</td>
-                            <!--<td>{{ reportWeekKey | limitTo:4:0 }}</td>-->
-                            <!--<td>{{ reportWeekKey | limitTo:2:4 }}</td>-->
-                            <!--<td>{{ reportWeekData.avgDistance | number : 2 }} km</td>-->
-                            <!--<td>{{ reportWeekData.avgSpeedSums | number: 2}} km/h</td>-->
-                        </tr>
+                        <tbody>
+                            <tr ng-repeat="report in timeReport.reportList | startFrom:(timeReport.currentPage-1)*timeReport.itemsPerPage | limitTo:timeReport.itemsPerPage">
+                                <td>{{ report.weekYear | limitTo:4:0 }}</td>
+                                <td>{{ report.weekYear | limitTo:2:4 }}</td>
+                                <td>{{ report.avgDistance | number : 2 }} km</td>
+                                <td>{{ report.avgSpeedSums | number: 2}} km/h</td>
+                            </tr>
                         </tbody>
                     </table>
 
@@ -77,3 +86,4 @@
         </div>
     </uib-tab>
 </uib-tabset>
+<uib-alert class="no-records-alert" type="info" ng-show="timeReport.reportList.length === 0">No report to display yet.</uib-alert>
