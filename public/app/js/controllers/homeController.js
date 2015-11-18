@@ -6,6 +6,7 @@
         .controller('HomeController', HomeController);
 
     HomeController.$inject = ['$scope', 'authentication'];
+
     function HomeController($scope, authentication) {
         var vm = this;
         vm.title = 'Welcome';

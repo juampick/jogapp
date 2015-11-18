@@ -18,8 +18,6 @@
             vm.userSelected = $stateParams.userSelected;
         }
 
-        console.debug(vm.userSelected);
-
         //Auth
         vm.authenticated = authentication.authenticated();
         vm.currentUser = authentication.currentUser();

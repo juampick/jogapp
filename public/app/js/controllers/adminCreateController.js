@@ -5,9 +5,9 @@
         .module('jogApp')
         .controller('AdminCreateController', AdminCreateController);
 
-    AdminCreateController.$inject = ['$scope', '$state', 'filterFilter', 'timeEntry', 'toastr', 'authentication', 'user', 'roles'];
+    AdminCreateController.$inject = ['$scope', '$state', 'toastr', 'authentication', 'user', 'roles'];
 
-    function AdminCreateController($scope, $state, filterFilter, timeEntryService, toastr, authentication, userService, roles) {
+    function AdminCreateController($scope, $state, toastr, authentication, userService, roles) {
         var vm = this;
 
         //Auth

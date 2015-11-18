@@ -5,9 +5,9 @@
         .module('jogApp')
         .controller('AuthController', AuthController);
 
-    AuthController.$inject = ['$rootScope', 'authentication', '$state', 'toastr'];
+    AuthController.$inject = ['$state', 'authentication', 'toastr'];
 
-    function AuthController($rootScope, authentication, $state, toastr) {
+    function AuthController($state, authentication, toastr) {
         var vm = this;
 
         vm.user = {};
@@ -21,8 +21,7 @@
                         toastr.success('Login Successful', 'Welcome!');
                     })
                     .catch(function (error) {
-                        console.debug(error);
-                        toastr.error(error.data.error, 'Error');
+                        toastr.error('Invalid Credentials. Please try again', 'Error');
                     });
             }
         };
@@ -40,11 +39,11 @@
             if (isValid) {
                 vm.user.role = 'user'; //For now: we currently create all the users with the common role: user
                 authentication.signUp(vm.user)
-                    .then(function(){
+                    .then(function () {
                         $state.go('/');
                         toastr.success('Account created successfully', 'Welcome!');
                     })
-                    .catch(function(error){
+                    .catch(function (error) {
                         toastr.error(error.data.error, 'Error');
                     });
             }

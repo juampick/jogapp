@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\TimeEntry;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class UserController extends Controller
     public function index()
     {
         if (Auth::user()->hasRole('user')){
-            return response()->json(['error' => 'You are not allowed to see this']);
+            return response()->json(['error' => 'You are not allowed to see this'], 405);
         }
 
         $users = [];
@@ -67,7 +68,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         if (Auth::user()->hasRole('user')){
-            return response()->json(['error' => 'You are not allowed to do this action']);
+            return response()->json(['error' => 'You are not allowed to do this action'], 405);
         }
 
         $validator = Validator::make($request->all(), [
@@ -87,7 +88,7 @@ class UserController extends Controller
 
         if (Auth::user()->hasRole('user_manager') &&
             ($roleName == 'user_manager' || $roleName == 'admin')){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
         }
 
         $userData['password'] =  Hash::make($userData['password']); //We do the hash of the password
@@ -113,17 +114,23 @@ class UserController extends Controller
     public function destroy($id)
     {
         if (!Auth::user()->hasRole('admin')){
-            return response()->json(['error' => 'You are not allowed to do this action']);
+            return response()->json(['error' => 'You are not allowed to do this action'], 405);
         }
 
         $userToDelete = User::where('id', $id)->get()->first();
 
         if ($userToDelete){
             if (Auth::user()->hasRole('user_manager') && ($userToDelete->hasRole('user_manager') || $userToDelete->hasRole('admin'))){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             }
         }
 
-        return User::destroy($id);
+        try {
+            User::destroy($id);
+        } catch (Exception $e){
+            return response()->json(['error' => 'There was an error deleting your User'], 405);
+        }
+
+        return $userToDelete;
     }
 }

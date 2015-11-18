@@ -1,0 +1,34 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">{{ title }}</h3>
+    </div>
+    <div class="modal-body">
+        <form name="modal" novalidate>
+            <div class="form-group has-feedback" ng-class="{ 'has-error': modal.oldPassword.$touched && modal.oldPassword.$invalid }">
+                <label for="oldPassword">Old Password</label>
+                <input type="password" id="oldPassword" name="oldPassword" class="form-control" ng-model="user.oldPassword" placeholder="Current Password" ng-minlength="5" required/>
+                <div class="help-block" ng-messages="modal.oldPassword.$error" ng-if="modal.oldPassword.$touched">
+                    <div ng-messages-include=" app/pages/messages.html"></div>
+                </div>
+            </div>
+            <div class="form-group has-feedback" ng-class="{ 'has-error': modal.newPassword.$touched && modal.newPassword.$invalid }">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" name="newPassword" class="form-control" ng-model="user.newPassword" placeholder="New Password" ng-minlength="5" required/>
+                <div class="help-block" ng-messages="modal.newPassword.$error" ng-if="modal.newPassword.$touched">
+                    <div ng-messages-include=" app/pages/messages.html"></div>
+                </div>
+            </div>
+            <div class="form-group has-feedback" ng-class="{ 'has-error': modal.confirmNewPassword.$touched && modal.confirmNewPassword.$invalid }">
+                <label for="confirmNewPassword">Confirm New Password</label>
+                <input type="password" id="confirmNewPassword" name="confirmNewPassword" compare-to="user.newPassword" class="form-control" ng-model="user.confirmNewPassword" placeholder="New Password Confirm" ng-minlength="5" required />
+                <div class="help-block" ng-messages="modal.confirmNewPassword.$error" ng-if="modal.confirmNewPassword.$touched">
+                    <div ng-messages-include=" app/pages/messages.html"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok(modal.$valid)" ng-disabled="modal.$invalid">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

@@ -5,11 +5,12 @@
         .module('jogApp')
         .factory('authentication', authentication);
 
-    authentication.$inject = ['$rootScope', '$auth', '$http', 'urls', '$state', 'toastr'];
+    authentication.$inject = ['$rootScope', '$auth', '$http', 'urls', '$state'];
 
-    function authentication($rootScope, $auth, $http, urls, $state, toastr) {
+    function authentication($rootScope, $auth, $http, urls, $state) {
         var authentication = this;
         authentication.getUserUrl = urls.BASE_API + '/authenticate/user';
+        authentication.getUserChangePwdUrl = urls.BASE_API + '/authenticate/changepwd';
 
         authentication.currentUser = null;
         authentication.authenticated = false;
@@ -81,6 +82,15 @@
             return promise;
         };
 
+        authentication.changePwd = function(userData){
+
+            return $http.post(authentication.getUserChangePwdUrl, {
+                oldPassword : userData.oldPassword,
+                newPassword : userData.newPassword,
+                confirmNewPassword : userData.confirmNewPassword
+            });
+        };
+
         authentication.stateChange = function (event) {
             // $stateChangeStart is fired whenever the state changes
             $rootScope.$on('$stateChangeStart', function (event, toState) {
@@ -130,8 +140,12 @@
                 return authentication.logout();
             },
 
-            signUp: function (userDate) {
-                return authentication.signUp(userDate);
+            signUp: function (userData) {
+                return authentication.signUp(userData);
+            },
+
+            changePwd: function (userData){
+                return authentication.changePwd(userData);
             },
 
             stateChange: function (event) {

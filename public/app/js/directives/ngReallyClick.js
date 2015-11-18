@@ -5,17 +5,6 @@
         .module('jogApp')
         .directive('ngReallyClick', ['$uibModal',
             function ($uibModal) {
-
-                var ModalInstanceCtrl = function ($scope, $uibModalInstance) {
-                    $scope.ok = function () {
-                        $uibModalInstance.close();
-                    };
-
-                    $scope.cancel = function () {
-                        $uibModalInstance.dismiss('cancel');
-                    };
-                };
-
                 return {
                     restrict: 'A',
                     scope: {
@@ -31,7 +20,7 @@
 
                             var modalInstance = $uibModal.open({
                                 template: modalHtml,
-                                controller: ModalInstanceCtrl
+                                controller: 'modalInstanceCtrl'
                             });
 
                             modalInstance.result.then(function () {
@@ -45,6 +34,18 @@
                     }
                 }
             }]);
+
+    angular
+        .module('jogApp')
+        .controller('modalInstanceCtrl', ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance) {
+            $scope.ok = function () {
+                $uibModalInstance.close();
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }]);
 
 })();
 

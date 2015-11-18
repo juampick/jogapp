@@ -5,9 +5,9 @@
         .module('jogApp')
         .controller('TimeEntryListController', TimeEntryListController);
 
-    TimeEntryListController.$inject = ['$scope', '$state', '$filter', '$stateParams', 'filterFilter', 'timeEntry', 'toastr', 'authentication', 'user'];
+    TimeEntryListController.$inject = ['$scope', '$state', '$filter', '$stateParams', 'timeEntry', 'toastr', 'authentication', 'user'];
 
-    function TimeEntryListController($scope, $state, $filter, $stateParams, filterFilter, timeEntryService, toastr, authentication, userService) {
+    function TimeEntryListController($scope, $state, $filter, $stateParams, timeEntryService, toastr, authentication, userService) {
         var vm = this;
 
         //Auth
@@ -69,8 +69,6 @@
 
             vm.timeEntries = vm.timeEntriesOriginal;
             vm.totalItems = vm.timeEntries.length;
-
-            console.log('@updateSearch - totalItems: ' + vm.totalItems);
         };
 
         vm.search = function(){
@@ -107,7 +105,6 @@
                 .finally(function () {
                     toastr.clear();
                     vm.totalItems = vm.timeEntries.length;
-                    console.log('@getTimeEntries totalItems: ' + vm.totalItems);
                     vm.timeEntriesOriginal = vm.timeEntries;
                 });
         }

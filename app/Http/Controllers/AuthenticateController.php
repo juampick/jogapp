@@ -128,12 +128,29 @@ class AuthenticateController extends Controller
     }
 
     public function changePwd(Request $request){
-        echo 'hello'; die;
+        $validator = Validator::make($request->all(), [
+            'oldPassword' => 'required',
+            'newPassword' => 'required',
+            'confirmNewPassword' => 'required|same:newPassword',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'invalid_data'], 422);
+        }
+
         $user = Auth::user();
+
+        //Check old password:
+        $oldPassword = $request->input('oldPassword');
+        if (!Hash::check($oldPassword, $user->password)){
+            return response()->json(['error' => 'old password do not match'], 422);
+        }
+
         if ($user) {
             $user->password = Hash::make($request->input('newPassword'));
-            return $user->save();
+            $user->save();
         }
+        return $user;
     }
 
 }

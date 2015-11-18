@@ -59,9 +59,9 @@ class TimeEntryController extends Controller
 
         if (Auth::user()->id != $userId){
             if (Auth::user()->hasRole('user')){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             } else if (Auth::user()->hasRole('user_manager') && (($user->hasRole('user_manager') || ($user->hasRole('admin'))))){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             }
         }
 
@@ -82,9 +82,9 @@ class TimeEntryController extends Controller
 
         if (Auth::user()->id != $id){
             if (Auth::user()->hasRole('user')){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             } else if (Auth::user()->hasRole('user_manager') && (($user->hasRole('user_manager') || ($user->hasRole('admin'))))){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             }
         }
 
@@ -115,9 +115,9 @@ class TimeEntryController extends Controller
 
         if (Auth::user()->id != $timeEntry->user_id){
             if (Auth::user()->hasRole('user')){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             } else if (Auth::user()->hasRole('user_manager') && (($timeEntry->user->hasRole('user_manager') || ($timeEntry->user->hasRole('admin'))))){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             }
         }
 
@@ -142,9 +142,9 @@ class TimeEntryController extends Controller
 
         if (Auth::user()->id != $timeEntry->user_id){
             if (Auth::user()->hasRole('user')){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             } else if (Auth::user()->hasRole('user_manager') && (($timeEntry->user->hasRole('user_manager') || ($timeEntry->user->hasRole('admin'))))){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             }
         }
 

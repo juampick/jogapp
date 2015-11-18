@@ -43,7 +43,7 @@
         }
 
         //Setup for the $httpInterceptor
-        $provide.factory('redirectWhenLoggedOut', redirectWhenLoggedOut);
+        $provide.factory('redirectWhenLoggedOut', ['$q', '$injector', '$rootScope', redirectWhenLoggedOut]);
         // Push the new factory onto the $http interceptor array
         $httpProvider.interceptors.push('redirectWhenLoggedOut');
 
@@ -89,6 +89,14 @@
                 data: {
                     requireLogin: false,
                     onlyAdmin: false
+                }
+            })
+            .state('profile', {
+                url: '/profile',
+                templateUrl: 'app/pages/profile.html',
+                controller: 'ProfileController as profile',
+                data: {
+                    requireLogin: true
                 }
             })
             .state('admin', {

@@ -6,6 +6,7 @@
         .controller('NavbarController', NavbarController);
 
     NavbarController.$inject = ['$scope', 'authentication'];
+
     function NavbarController($scope, authentication) {
         var vm = this;
         vm.authenticated = authentication.authenticated();

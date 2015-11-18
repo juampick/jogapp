@@ -30,9 +30,9 @@ class ReportController extends Controller
         $userParam = User::find($userId);
         if ($user->id != $userId){
             if ($user->hasRole('user')){
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405 );
             } else if ($user->hasRole('user_manager') && ( $userParam->hasRole('user_manager') || ($userParam->hasRole('admin')))) {
-                return response()->json(['error' => 'You are not allowed to do this action']);
+                return response()->json(['error' => 'You are not allowed to do this action'], 405);
             }
         }
 

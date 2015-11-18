@@ -5,9 +5,9 @@
         .module('jogApp')
         .controller('TimeEntryEditController', TimeEntryEditController);
 
-    TimeEntryEditController.$inject = ['$scope', '$filter', '$state', 'authentication', 'timeEntry', 'toastr', '$stateParams'];
+    TimeEntryEditController.$inject = ['$scope', '$filter', '$state', '$stateParams', 'timeEntry', 'toastr'];
 
-    function TimeEntryEditController($scope, $filter, $state, authentication, timeEntryService, toastr, $stateParams) {
+    function TimeEntryEditController($scope, $filter, $state, $stateParams, timeEntryService, toastr) {
         var vm = this;
 
         vm.originalTimeEntry = {};
@@ -17,8 +17,6 @@
         if ($stateParams.userSelected !== null) {
             vm.userSelected = $stateParams.userSelected;
         }
-
-        console.debug(vm.userSelected);
 
         if ($stateParams.data !== undefined){
             var editTimeEntry = $stateParams.data;
@@ -30,7 +28,6 @@
                 time: editTimeEntry.time
             };
 
-            console.debug(vm.originalTimeEntry);
             vm.timeEntry = {
                 id: editTimeEntry.id,
                 date: $filter('date')(editTimeEntry.date, "MM-dd-yyyy"),
@@ -38,8 +35,6 @@
                 time: editTimeEntry.time
             };
 
-        } else {
-            //ToDo: search for data from db?
         }
 
         /* Form: DatePicker config: */

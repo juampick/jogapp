@@ -5,16 +5,16 @@
         .module('jogApp')
         .controller('AdminController', AdminController);
 
-    AdminController.$inject = ['$scope', '$state', 'filterFilter', 'timeEntry', 'toastr', 'authentication', 'user'];
+    AdminController.$inject = ['$scope', 'toastr', 'authentication', 'user'];
 
-    function AdminController($scope, $state, filterFilter, timeEntryService, toastr, authentication, userService) {
+    function AdminController($scope, toastr, authentication, user) {
         var vm = this;
 
         //Auth
         vm.authenticated = authentication.authenticated();
         vm.currentUser = authentication.currentUser();
 
-        $scope.$watch( authentication.authenticated, function ( authenticated ) {
+        $scope.$watch(authentication.authenticated, function (authenticated) {
             vm.authenticated = authenticated;
             vm.currentUser = authentication.currentUser();
         });
@@ -25,7 +25,7 @@
         vm.itemsPerPage = 3;
 
         function getUsers() {
-            userService.get()
+            user.get()
                 .then(function (response) {
                     vm.usersList = [];
                     vm.usersList = response;
@@ -38,21 +38,22 @@
 
                 });
         }
+
         getUsers();
 
-        vm.deleteUser = function(user){
-            console.debug(user);
-            userService.delete(user.id)
-                .then(function(){
+        vm.deleteUser = function (userParam) {
+            user.delete(userParam.id)
+                .then(function () {
                     getUsers();
+                    toastr.success('User deleted successfully');
                 })
-                .catch(function(){
-
+                .catch(function () {
+                    toastr.error('There was an error deleting the USer');
                 });
 
         };
 
-        vm.refresh = function(){
+        vm.refresh = function () {
             toastr.info('Loading users...');
             getUsers();
             toastr.clear();
