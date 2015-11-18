@@ -2,8 +2,6 @@
     <div class="well">
         <h3>Sign In</h3>
         <form name="signIn" novalidate>
-            <!--<p class="alert alert-danger" ng-if="auth.loginError"><strong>Error:</strong> {{auth.loginErrorText}}</p>-->
-
             <div class="form-group has-feedback" ng-class="{ 'has-error': signIn.email.$touched && signIn.email.$invalid }">
                 <input type="email" name="email" class="form-control" placeholder="Email" ng-model="auth.user.email" required>
                 <i class="glyphicon glyphicon-envelope form-control-feedback"></i>
@@ -18,7 +16,7 @@
                     <div ng-messages-include="app/pages/messages.html"></div>
                 </div>
             </div>
-            <button class="btn btn-primary btn-block" ng-click="auth.login(signIn.$valid)" ng-disabled="signIn.$invalid">Submit</button>
+            <button id="submit" class="btn btn-primary btn-block" ng-click="auth.login(signIn.$valid)" ng-disabled="signIn.$invalid">Submit</button>
             <br>
             <p class="text-center text-muted">Don't have an account yet? <a ui-sref="signup">Sign up</a></p>
         </form>
